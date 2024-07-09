@@ -1,10 +1,26 @@
 'use client';
 
 import Image from "next/image";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Card from "./ui/components/card";
 import Filter from "./ui/components/filter";
 export default function Home() {
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('/api/get-locations');
+        const data = await response.json();
+        console.log(data);
+        setLocations(data.locations.rows);
+      } catch (error) {
+        console.error('Failed to fetch locations:', error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
   return (
     <main className="min-h-screen items-center p-24">
       <div className="flex flex-wrap justify-between">
@@ -19,11 +35,9 @@ export default function Home() {
       </div>
       <div className="text-2xl py-4 font-medium">Places you can go to...</div>
       <div className="flex flex-wrap mb-4 -mx-3 group/list">
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
+      {locations.map((location, index) => (
+          <Card key={index} location={location} />
+        ))}
       </div>
     </main>
   );
