@@ -108,7 +108,7 @@ export default function Filter({ children }:
             </div>
             <div className="pt-8 flex gap-4">
                 <button onClick={() => console.log(filters)} className="bg-sky-400 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded">
-                    Let's go already
+                    Let&apos;s go already
                 </button>
                 <button onClick={resetFilters} className=" hover:text-blue-500 hover:underline text-slate-400 font-normal py-2 px-4">
                     No, reset
