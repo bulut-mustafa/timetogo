@@ -32,7 +32,7 @@ export default function Card({ children, location }: {
                 <div className="flex flex-wrap gap-2 px-4 py-6">
                     <Tag icon={location.type} tag={location.type}></Tag>
                     <Tag icon={location.temperature} tag={location.temperature}></Tag>
-                    <Tag icon="Flight" tag="Flight">{location.distance} </Tag>
+                    <Tag icon="flight" tag="flight">{location.distance} </Tag>
                 </div>
                 {children}
             </div>

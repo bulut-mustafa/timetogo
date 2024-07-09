@@ -14,7 +14,7 @@ export default function Tag({ children, tag, icon } : {
             alt={`/${tag}`}
             className="mr-2"
         />
-        <div className="text-sm font-light flex flex-col justify-center "> {children}{tag}</div>
+        <div className="text-sm font-light flex flex-col justify-center capitalize"> {children}{tag}</div>
     </div>
   );
 }
