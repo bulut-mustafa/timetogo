@@ -4,7 +4,6 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -20,7 +19,7 @@ export async function GET(request: Request) {
     await sql`INSERT INTO locations (place, country, type, temperature, distance, img) VALUES (${place}, ${country}, ${type}
     ,${temperature}, ${distance}, ${img});`;
     revalidatePath('/');
-    redirect('/');
+    return NextResponse.json({ message: 'Location added successfully' }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
