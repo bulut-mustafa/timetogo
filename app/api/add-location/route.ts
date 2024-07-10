@@ -1,6 +1,11 @@
+
+'use server';
+
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
- 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const place = searchParams.get('place');
@@ -14,8 +19,11 @@ export async function GET(request: Request) {
     if (!place || !country || !type || !temperature || !distance || !img) throw new Error('All the parameters are required');
     await sql`INSERT INTO locations (place, country, type, temperature, distance, img) VALUES (${place}, ${country}, ${type}
     ,${temperature}, ${distance}, ${img});`;
+    revalidatePath('/');
+    redirect('/');
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
  
 }
+

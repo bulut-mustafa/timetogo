@@ -12,7 +12,6 @@ export default function Home() {
       try {
         const response = await fetch('/api/get-locations');
         const data = await response.json();
-        console.log(data);
         setLocations(data.locations.rows);
       } catch (error) {
         console.error('Failed to fetch locations:', error);
