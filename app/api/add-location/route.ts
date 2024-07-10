@@ -18,6 +18,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error }, { status: 500 });
   }
  
-  const locations = await sql`SELECT * FROM locations;`;
-  return NextResponse.json({ locations }, { status: 200 });
 }
