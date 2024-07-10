@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     if (!place || !country || !type || !temperature || !distance || !img) throw new Error('All the parameters are required');
     await sql`INSERT INTO locations (place, country, type, temperature, distance, img) VALUES (${place}, ${country}, ${type}
     ,${temperature}, ${distance}, ${img});`;
-    revalidatePath('/get-locations');
+    revalidatePath('/');
     redirect('/');
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
