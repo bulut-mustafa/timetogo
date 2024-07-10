@@ -19,7 +19,9 @@ export async function GET(request: Request) {
     await sql`INSERT INTO locations (place, country, type, temperature, distance, img) VALUES (${place}, ${country}, ${type}
     ,${temperature}, ${distance}, ${img});`;
     revalidatePath('/');
-    return NextResponse.json({ message: 'Location added successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'Location added successfully' }, { status: 200 ,
+      headers: { 'Cache-Control': 'no-cache' }
+    });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
