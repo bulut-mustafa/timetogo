@@ -21,13 +21,13 @@ const LoginPage: React.FC = () => {
                 {/* Left Section */}
                 <div className="w-2/3 p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75">
                     <h1 className="text-5xl font-extrabold mb-6 leading-tight">
-                        Welcome Back
+                        Welcome, its Time To Go
                     </h1>
                     <p className="text-xl font-light mb-4">
-                        Your journey continues here. 
+                        Your journey starts here.
                     </p>
                     <p className='text-lg font-light '>
-                        Sign in to access your personalized dashboard and explore more.
+                        Sign up to create your personalized dashboard and explore more.
                     </p>
                 </div>
 
@@ -46,8 +46,34 @@ const LoginPage: React.FC = () => {
 
                         {/* Login Form */}
                         <div className="w-full">
-                            <p className="text-center text-lg font-semibold mb-4">Sign in with Email</p>
+                            <p className="text-center text-lg font-semibold mb-4">Create your account</p>
                             <form className="space-y-6" onSubmit={handleSubmit}>
+                                <div>
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                                        placeholder="First Name"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="lastname"
+                                        id="lastname"
+                                        className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                                        placeholder="Last Name"
+                                        required
+                                    />
+                                </div>
                                 <div>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
                                         Email
@@ -74,21 +100,29 @@ const LoginPage: React.FC = () => {
                                         required
                                     />
                                 </div>
-                                <div className="text-right">
-                                    <a href="#" className="text-sm font-medium text-blue-500 hover:underline">
-                                        Forgot password?
-                                    </a>
+                                <div>
+                                    <label htmlFor="passwordcheck" className="block mb-2 text-sm font-medium text-gray-900">
+                                        Password Confirmation
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="passwordcheck"
+                                        id="passwordcheck"
+                                        placeholder="••••••••"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                                        required
+                                    />
                                 </div>
                                 <button
                                     type="submit"
                                     className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 >
-                                    Sign in
+                                    Sign Up
                                 </button>
                                 <p className="text-sm font-light text-gray-500">
-                                    Don’t have an account yet?{' '}
-                                    <Link href="/signup" className="font-medium text-blue-600 hover:underline">
-                                        Sign up
+                                    Already have an account?{' '}
+                                    <Link href="/login" className="font-medium text-blue-600 hover:underline">
+                                        Log in
                                     </Link>
                                 </p>
                             </form>
