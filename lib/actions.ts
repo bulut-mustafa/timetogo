@@ -1,26 +1,25 @@
-
-import { sql } from '@vercel/postgres';
+'use server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { signUp, signIn } from './firebaseActions/firebaseAuth';
+import { addNewUser } from './users';
+import { User } from './types';
 
-export async function createInvoice(place:string, country:string, type:string, temperature:string, distance:string, img:string) {
-    // Validate form fields using Zod
- 
+export const registerNewUser = async (user: User) => {
+  const userUID = await signUp(user);  // Add the user's details to the database
+  await addNewUser(user, userUID);
 
-    // Insert data into the database
-    try {
-      await sql`
-        INSERT INTO locations (place, country, type, temperature, distance, img)
-        VALUES (${place}, ${country}, ${type}, ${temperature}, ${distance}, ${img})
-      `;
-    } catch (error) {
-      // If a database error occurs, return a more specific error.
-      return {
-        message: 'Database Error: Failed to Create Invoice.',
-      };
-    }
+  revalidatePath('/', 'layout');
+  redirect('/login');
   
-    // Revalidate the cache for the invoices page and redirect the user.
-    revalidatePath('/');
+};
+
+export const logIn = async (email: string, password: string) => {
+  const user = await signIn(email, password);
+  if (!user) {
+    throw new Error('User not found');
+  }else{
+    revalidatePath('/', 'layout');
     redirect('/');
+  }
 }
