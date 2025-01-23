@@ -1,13 +1,27 @@
 'use client';
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect} from "react";
 import Link from 'next/link';
 import Image from 'next/image';
-import { app } from "../../firebase";
+import { app, auth } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+const SkeletonLoader = () => {
+    return (
+        <div className="animate-pulse space-y-4">
+            {/* Skeleton for header */}
+            <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+            {/* Skeleton for email input */}
+            <div className="h-10 bg-gray-300 rounded w-full"></div>
+            {/* Skeleton for password input */}
+            <div className="h-10 bg-gray-300 rounded w-full"></div>
+            {/* Skeleton for button */}
+            <div className="h-12 bg-blue-300 rounded w-full"></div>
+        </div>
+    );
+};
 const SignUpForm: React.FC = () => {
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
         lastname: '',
@@ -32,16 +46,37 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-        
+
 
         try {
             await createUserWithEmailAndPassword(getAuth(app), formData.email, formData.password);
             router.push("/login");
-          } catch (e) {
+        } catch (e) {
             setError((e as Error).message);
-          }
+        }
     };
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                // If user is signed in, redirect to home or another page
+                router.push('/');
+            } else {
+                // If no user is signed in, stop loading
+                setLoading(false);
+            }
+        });
 
+        return () => unsubscribe(); // Clean up the listener on unmount
+    }, [router]);
+
+
+    if (loading) {
+        return (
+            <div className="p-6 max-w-md mx-auto">
+                <SkeletonLoader />
+            </div>
+        );
+    }
     return (
         <div className="h-full bg-white rounded-l-3xl w-1/3 flex items-center justify-center">
             <div className="flex flex-col items-center w-full max-w-md p-6 gap-6">
