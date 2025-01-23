@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import LoginBack from '@/ui/components/login-page/login-back';
+import LoginBack from '@/components/login-page/login-back';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Montserrat, Nunito_Sans } from 'next/font/google';

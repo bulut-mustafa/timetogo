@@ -1,5 +1,5 @@
 import { fetchUserData } from "../lib/firebaseActions/getUserInformations"; // Import the server-side logic
-import Header from "@/ui/components/main-header/header";
+import Header from "@/components/main-header/header";
 
 
 
