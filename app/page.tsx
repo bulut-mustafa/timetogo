@@ -1,29 +1,35 @@
-import { fetchUserData } from "../lib/firebaseActions/getUserInformations"; // Import the server-side logic
-import Header from "@/components/main-header/header";
 
-
-
-const Home = async () => {
-  let name = "";
-  let error = "";
-
-  try {
-    const userData = await fetchUserData(); // Fetch user data using the utility function
-    name = userData.name;
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Error fetching user data";
+import Header from "@/components/main-page/main-header/header";
+import { useAuth } from "@/context/auth-context";
+import { auth ,app} from "@/firebase";
+ 
+const Home = () => {
+  const currentUser = auth.currentUser;
+  console.log('Current User:', currentUser);
+  // Show loading state if Firebase is initializing
+  if (currentUser) {
+    return (
+      <main className="min-h-screen items-center">
+        <Header />
+        <p>Loading...</p>
+      </main>
+    );
   }
 
   return (
     <main className="min-h-screen items-center">
       <Header />
-      <div className="text-center mt-8">
-        {error ? (
-          <p>Error: {error}</p>
-        ) : (
-          <h1>Welcome, {name}</h1> // Display the user's name if available
-        )}
-      </div>
+      {currentUser ? (
+        <div>
+          <h1>Welcome Back, {currentUser || 'User'}!</h1>
+          <p>Here are your personalized items.</p>
+        </div>
+      ) : (
+        <div>
+          <h1>Welcome to Our Website!</h1>
+          <p>Explore our general content.</p>
+        </div>
+      )}
     </main>
   );
 };

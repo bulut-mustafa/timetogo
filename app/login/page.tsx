@@ -1,11 +1,9 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import LoginBack from '@/components/login-page/login-back';
-import Link from 'next/link';
-import Image from 'next/image';
+import LoginForm from '@/components/login-page/login-form';
 import { Montserrat, Nunito_Sans } from 'next/font/google';
-import { logIn } from '@/lib/actions';
+import Image from 'next/image';
+import Link from 'next/link';
 // Import Google Fonts
 const montserrat = Montserrat({
     subsets: ['latin'],
@@ -20,33 +18,9 @@ const nunitoSans = Nunito_Sans({
 });
 
 const LoginPage: React.FC = () => {
-
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
-    const [error, setError] = useState<string | null>(null);
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try{
-            await logIn(formData.email, formData.password);
-        } catch (err) {
-            console.error('Error during sign in:', err);
-            setError('Failed to sign in. Please try again.');
-        }
-    }
-
     return (
         <>
-            <LoginBack></LoginBack>
+            <LoginBack />
             <main
                 className={`${montserrat.variable} ${nunitoSans.variable} font-sans h-screen flex items-center relative z-10`}
             >
@@ -83,74 +57,12 @@ const LoginPage: React.FC = () => {
                             <p className="text-center text-lg font-semibold mb-4 font-[var(--font-nunito-sans)]">
                                 Sign in with Email
                             </p>
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <div>
-                                    <label
-                                        htmlFor="email"
-                                        className="block mb-2 text-sm font-medium text-gray-900 font-[var(--font-nunito-sans)]"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                        placeholder="mail@example.com"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="password"
-                                        className="block mb-2 text-sm font-medium text-gray-900 font-[var(--font-nunito-sans)]"
-                                    >
-                                        Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        placeholder="••••••••"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                        required
-                                        value={formData.password}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="text-right">
-                                    <a
-                                        href="#"
-                                        className="text-sm font-medium text-blue-500 hover:underline font-[var(--font-nunito-sans)]"
-                                    >
-                                        Forgot password?
-                                    </a>
-                                </div>
-                                {error && <span className="text-red-500 text-sm">({error})</span>}
-                                <button
-                                    type="submit"
-                                    className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center font-[var(--font-nunito-sans)]"
-                                >
-                                    Sign in
-                                </button>
-                                <p className="text-sm font-light text-gray-500 font-[var(--font-nunito-sans)]">
-                                    Don’t have an account yet?{' '}
-                                    <Link
-                                        href="/signup"
-                                        className="font-medium text-blue-600 hover:underline"
-                                    >
-                                        Sign up
-                                    </Link>
-                                </p>
-                            </form>
+                            <LoginForm />
                         </div>
                     </div>
                 </div>
             </main>
         </>
-
     );
 };
 

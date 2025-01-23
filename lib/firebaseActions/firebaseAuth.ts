@@ -21,15 +21,16 @@ export async function signUp(user: User): Promise<string> {
   }
 }
 
-export async function signIn(email: string, password: string): Promise<string> {
-  let userCredential = null;
+export async function signIn(email: string, password: string){
   try {
-    userCredential = await signInWithEmailAndPassword(
+    console.log("Logging in signIn:", email);
+    const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
-    return userCredential.user.uid; // Only return the UID
+    console.log("User logged in: ",userCredential.user);
+    return userCredential.user; // Only return the UID
   } catch (error: any) {
     throw new Error(error.message || "Failed to sign in.");
   }
