@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import { FormEvent, useState } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
-import { registerNewUser } from '@/lib/actions';
-import { User } from '@/lib/types';
+import { app } from "../../firebase";
+import { useRouter } from "next/navigation";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUpForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const SignUpForm: React.FC = () => {
         passwordcheck: '',
     });
     const [error, setError] = useState<string | null>(null);
-
+    const router = useRouter();
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -24,28 +25,21 @@ const SignUpForm: React.FC = () => {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (formData.password !== formData.passwordcheck) {
             setError('Passwords do not match');
             return;
         }
 
-        const user: User = {
-            name: formData.name,
-            lastName: formData.lastname,
-            picture: '',
-            from: '',
-            email: formData.email,
-            password: formData.password,
-        };
+        
 
         try {
-            await registerNewUser(user);
-            console.log('User registered successfully');
-        } catch (err) {
-            console.error('Error during sign up:', err);
-        }
+            await createUserWithEmailAndPassword(getAuth(app), formData.email, formData.password);
+            router.push("/login");
+          } catch (e) {
+            setError((e as Error).message);
+          }
     };
 
     return (

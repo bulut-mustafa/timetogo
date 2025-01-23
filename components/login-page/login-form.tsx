@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged } from 'firebase/auth';
-import { logIn } from '@/lib/actions';
-import { auth } from '@/firebase';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "../../firebase";
+
 import Link from 'next/link';
 const LoginForm: React.FC = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -22,27 +22,26 @@ const LoginForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            console.log('Logging in:', formData);
-            await logIn(formData.email, formData.password);
-        } catch (err) {
-            console.error('Login error:', err);
-            setError('Failed to log in. Please check your credentials.');
-        }
+            const credential = await signInWithEmailAndPassword(
+              getAuth(app),
+              formData.email,
+              formData.password
+            );
+            const idToken = await credential.user.getIdToken();
+      
+            await fetch("/api/login", {
+              headers: {
+                Authorization: `Bearer ${idToken}`,
+              },
+            });
+      
+            router.push("/");
+          } catch (e) {
+            setError((e as Error).message);
+          }
     };
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log('User logged in via onAuthStateChanged:', user);
-                router.push('/');
-            } else {
-                console.log('No user detected (logged out).');
-            }
-        });
     
-        // Cleanup the listener
-        return unsubscribe;
-    }, [router]);
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
