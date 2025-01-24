@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,13 +7,11 @@ import { auth, app } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { User as FirebaseUser } from "firebase/auth";
 import { getAuth, signOut } from "firebase/auth";
+import { useAuth } from '@/context/auth-context';
 
-interface HeaderProps {
-  currentUser: FirebaseUser | null;
-}
 
-const Header: React.FC<HeaderProps> = ({ currentUser }) => {
-
+const Header: React.FC = () => {
+  const { user, loading } = useAuth();
   const router = useRouter();
   async function handleLogout() {
     await signOut(getAuth(app));
@@ -35,25 +34,34 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
       
       {/* Navigation */}
       <nav aria-label="Main navigation">
-        <ul className='list-none flex m-0 p-0 gap-6 text-xl'>
-          {!currentUser ? (
+        <ul className="list-none flex m-0 p-0 gap-6 text-xl">
+          {loading ? (
+            // Skeleton placeholders while loading
             <>
-              <li className='flex'>
-                <NavLink href="/login">Login</NavLink>
-              </li>
-              <li className='flex'>
-                <NavLink href="/signup">Sign Up</NavLink>
-              </li>
+              <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
+              <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
             </>
           ) : (
-            <>
-              <li className='flex'>
-                <NavLink href="/profile">Profile</NavLink>
-              </li>
-              <li className='flex'>
-                <button onClick={handleLogout} className="text-blue-600">Log Out</button>
-              </li>
-            </>
+            // Actual navigation links
+            !user ? (
+              <>
+                <li className="flex">
+                  <NavLink href="/login">Login</NavLink>
+                </li>
+                <li className="flex">
+                  <NavLink href="/signup">Sign Up</NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="flex">
+                  <NavLink href="/profile">Profile</NavLink>
+                </li>
+                <li className="flex">
+                  <button onClick={handleLogout} className="text-blue-600">Log Out</button>
+                </li>
+              </>
+            )
           )}
         </ul>
       </nav>
