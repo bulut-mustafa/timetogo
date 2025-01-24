@@ -2,6 +2,7 @@
 import Header from "@/components/main-page/main-header/header";
 import ClientOnlyHome from "@/components/main-page/home-items";
 import SearchBack from "@/components/main-page/main-search/hero-images";
+import SearchBar from "@/components/main-page/main-search/search";
 const Home =() => {
   
 
@@ -14,6 +15,7 @@ const Home =() => {
       {/* Render Header without user state initially */}
       <Header />
       <SearchBack/>
+      <SearchBar/>
       {/* Render client-side logic that updates the header dynamically */}
       <ClientOnlyHome />
       {/* Display server-side data */}
