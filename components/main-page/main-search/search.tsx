@@ -1,5 +1,7 @@
 import AutocompleteCombobox from './combobox';
-import DatePicker from './datepicker';
+import {Button} from '@heroui/button'; 
+import {DatePicker} from "@heroui/react";
+
 export default function SearchBar() {
     return (
         <>
@@ -19,7 +21,7 @@ export default function SearchBar() {
                     </div>
 
                     <div className="w-1/5">
-                        <button className="w-full bg-blue-400 text-white rounded-lg p-2">Search</button>
+                        <Button>Click me</Button>
                     </div>
                 </div>
             </div>
