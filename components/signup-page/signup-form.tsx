@@ -1,11 +1,16 @@
 'use client';
 
-import { FormEvent, useState, useEffect} from "react";
+import { FormEvent, useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import { app, auth } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { database } from '../../firebase';
+import { ref, set } from 'firebase/database';
+import { Input } from "@heroui/react";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "../login-page/password-input";
+
 const SkeletonLoader = () => {
     return (
         <div className="animate-pulse space-y-4">
@@ -30,6 +35,9 @@ const SignUpForm: React.FC = () => {
         passwordcheck: '',
     });
     const [error, setError] = useState<string | null>(null);
+
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
     const router = useRouter();
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -46,10 +54,17 @@ const SignUpForm: React.FC = () => {
             return;
         }
 
-
-
         try {
-            await createUserWithEmailAndPassword(getAuth(app), formData.email, formData.password);
+            const userCredential = await createUserWithEmailAndPassword(getAuth(app), formData.email, formData.password);
+            const userRef = ref(database, `users/${userCredential.user.uid}`);
+            await set(userRef, {
+                name: formData.name,
+                lastName: formData.lastname,
+                from: '',
+                picture: '',
+                email: formData.email,
+                createdAt: new Date().toISOString(),
+            });
             router.push("/login");
         } catch (e) {
             setError((e as Error).message);
@@ -87,78 +102,57 @@ const SignUpForm: React.FC = () => {
                     <p className="text-center text-lg font-semibold mb-4">Create your account</p>
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">
-                                First Name
-                            </label>
-                            <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                placeholder="First Name"
-                                required
+                            <Input isRequired label="Name" name='name' type="text" variant={'flat'} value={formData.name} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <Input isRequired label="Last Name" name='lastname' type="text" variant={'flat'} value={formData.lastname} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <Input isRequired label="Email" name='email' type="email" variant={'flat'} value={formData.email} onChange={handleInputChange} />
+
+                        </div>
+                        <div>
+                            <Input isRequired label="Password" name='password'
+                                endContent={
+                                    <button
+                                        aria-label="toggle password visibility"
+                                        className="focus:outline-none"
+                                        type="button"
+                                        onClick={toggleVisibility}
+                                    >
+                                        {isVisible ? (
+                                            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        ) : (
+                                            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        )}
+                                    </button>
+                                }
+                                type={isVisible ? "text" : "password"}
+                                variant={'flat'}
+                                value={formData.password} onChange={handleInputChange}
+
                             />
                         </div>
                         <div>
-                            <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900">
-                                Last Name
-                            </label>
-                            <input
-                                type="text"
-                                name="lastname"
-                                id="lastname"
-                                value={formData.lastname}
-                                onChange={handleInputChange}
-                                className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                placeholder="Last Name"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                placeholder="mail@example.com"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                placeholder="••••••••"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="passwordcheck" className="block mb-2 text-sm font-medium text-gray-900">
-                                Password Confirmation {error && <span className="text-red-500 text-sm">({error})</span>}
-                            </label>
-                            <input
-                                type="password"
-                                name="passwordcheck"
-                                id="passwordcheck"
-                                value={formData.passwordcheck}
-                                onChange={handleInputChange}
-                                placeholder="••••••••"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                                required
+                            <Input isRequired label="Confirm Password" name='passwordcheck'
+                                endContent={
+                                    <button
+                                        aria-label="toggle password visibility"
+                                        className="focus:outline-none"
+                                        type="button"
+                                        onClick={toggleVisibility}
+                                    >
+                                        {isVisible ? (
+                                            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        ) : (
+                                            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        )}
+                                    </button>
+                                }
+                                type={isVisible ? "text" : "password"}
+                                variant={'flat'}
+                                value={formData.passwordcheck} onChange={handleInputChange}
+
                             />
                         </div>
                         <button
