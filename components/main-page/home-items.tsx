@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useAuth } from "@/context/auth-context";
+import Tag from "./tag";
 
 const ClientOnlyHome = () => {
   const { user, loading } = useAuth();

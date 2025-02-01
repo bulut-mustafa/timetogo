@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import beachImg from '@/public/beachbackground.jpg';
-import cappaImg from '@/public/cappadociabackground.jpg';
-import cityImg from '@/public/citybackground.jpg';
-import desertImg from '@/public/desertbackground.jpg';
-import forestImg from '@/public/forestbackground.jpg';
-import lakeImg from '@/public/lakebackground.jpg';
-import mountainImg from '@/public/mountainbackground.jpg';
-import snowImg from '@/public/snowmountainbackground.jpg';
+import beachImg from '@/public/backgrounds/beachbackground.jpg';
+import cappaImg from '@/public/backgrounds/cappadociabackground.jpg';
+import cityImg from '@/public/backgrounds/citybackground.jpg';
+import desertImg from '@/public/backgrounds/desertbackground.jpg';
+import forestImg from '@/public/backgrounds/forestbackground.jpg';
+import lakeImg from '@/public/backgrounds/lakebackground.jpg';
+import mountainImg from '@/public/backgrounds/mountainbackground.jpg';
+import snowImg from '@/public/backgrounds/snowmountainbackground.jpg';
 
 const images = [
     { image: beachImg, alt: 'Clear water beach' },
@@ -36,7 +36,7 @@ export default function HeroImages() {
     }, []);
 
     return (
-        <section className="relative w-full mx-auto mb-8 h-96">
+        <section className="relative w-full mx-auto h-96">
             {/* Background Images */}
             <div className="absolute inset-0 opacity-80 overflow-hidden">
                 <div className="relative w-full h-full overflow-hidden">

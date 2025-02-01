@@ -1,36 +1,47 @@
 'use client';
-import Combobox from './combobox';
-import { Button } from '@heroui/button';
-import { DateRangePicker } from "@heroui/react";
-const animals = [
-    { label: 'Giraffe', key: 'giraffe' },
-    { label: 'Dolphin', key: 'dolphin' },
-    { label: 'Penguin', key: 'penguin' },
-    { label: 'Zebra', key: 'zebra' },
-    { label: 'Shark', key: 'shark' },
-    { label: 'Whale', key: 'whale' },
-    { label: 'Otter', key: 'otter' },
-    { label: 'Crocodile', key: 'crocodile' },
+import { Input } from "@heroui/react";
+import AutocompleteServer from "./combobox";
+
+const temperatureTags = [
+    {label: 'Hot', key: 'hot'},
+    {label: 'Temperate', key: 'temperate'},
+    {label: 'Cold', key: 'cold'}
+]
+const typeTags = [
+    { label: 'City', key: 'city' },
+    { label: 'Beach', key: 'beach' },
+    { label: 'Mountain', key: 'mountain' },
+    { label: 'Forest', key: 'forest' },
+    { label: 'Desert', key: 'desert' },
+    { label: 'Island', key: 'island' },
+    { label: 'Lake', key: 'lake' },
+    { label: 'Historical', key: 'historical' },
+    { label: 'Countryside', key: 'countryside' },
+    { label: 'Snowy Destination', key: 'snowy' }
 ];
+
+const averageCostTags = [
+    { label: 'Budget', key: 'budget' },
+    { label: 'Mid-range', key: 'mid_range' },
+    { label: 'Luxury', key: 'luxury' }
+];
+
 export default function SearchBar() {
     return (
         <>
-            <div className="flex justify-center mx-auto">
+            <div className="absolute top-80 left-1/2 transform -translate-x-1/2 w-4/5 p-6 bg-white shadow-lg rounded-xl z-50">
                 <div className="flex items-center gap-4 justify-center">
-                    <div className="">
-                        <Combobox animals={animals} />
+                    <div className="w-1/4">
+                        <Input size="sm" label="Search a location" type="text" />
                     </div>
-                    <div className="">
-                        <Combobox animals={animals} />
+                    <div className="w-1/4">
+                        <AutocompleteServer tagLabel="Temperature" tags={temperatureTags} />
                     </div>
-                    <div  className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <DateRangePicker className="max-w-xs" visibleMonths={2} label="Stay duration" variant={'flat'} />
+                    <div className="w-1/4">
+                        <AutocompleteServer tagLabel="Type" tags={typeTags} />
                     </div>
-                    <div className="">
-                    </div>
-
-                    <div className="">
-                        <Button>Click me</Button>
+                    <div className="w-1/4">
+                        <AutocompleteServer tagLabel="Budget" tags={averageCostTags} />
                     </div>
                 </div>
             </div>

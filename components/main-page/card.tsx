@@ -1,14 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Tag from "./tag";
-interface Location {
-    img: string;
-    place: string;
-    country: string;
-    type: string;
-    temperature: string;
-    distance: string;
-  }
+import { Location } from "@/lib/types";
+
 export default function Card({ children, location }: {
     children?: React.ReactNode;
     location: Location;
@@ -21,18 +15,17 @@ export default function Card({ children, location }: {
                     <div className="w-full">
                         <img
                             src={location.img}
-                            alt={location.place}
+                            alt={location.city}
                             className="transform transition duration-300 hover:scale-110"
                         />
                     </div>
                     <div className="font-semibold text-lg px-4 py-4">
-                        {location?.place}, {location.country}
+                        {location?.city}, {location.country}
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-2 px-4 py-6">
                     <Tag icon={location.type} tag={location.type}></Tag>
                     <Tag icon={location.temperature} tag={location.temperature}></Tag>
-                    <Tag icon="flight" tag="flight">{location.distance} </Tag>
                 </div>
                 {children}
             </div>

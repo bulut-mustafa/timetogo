@@ -1,0 +1,75 @@
+{
+    "destinations": {
+      "new_jfk": {
+        "country": "United States",
+        "city": "New York",
+        "iata": "JFK",
+        "icao": "KJFK",
+        "airport": "John F. Kennedy International Airport",
+        "latitude": 40.6413,
+        "longitude": -73.7781,
+        "temperature": "temperate",
+        "type": "city",
+        "average_cost": "mid-range",
+        "best_season": "autumn",
+        "img": ""
+      },
+      "par_cdg": {
+        "country": "France",
+        "city": "Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "airport": "Charles de Gaulle Airport",
+        "latitude": 49.0097,
+        "longitude": 2.5479,
+        "temperature": "temperate",
+        "type": "city",
+        "average_cost": "luxury",
+        "best_season": "spring",
+        "img": ""
+      },
+      "ban_bkk": {
+        "country": "Thailand",
+        "city": "Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "airport": "Suvarnabhumi Airport",
+        "latitude": 13.689999,
+        "longitude": 100.750112,
+        "temperature": "hot",
+        "type": "city",
+        "average_cost": "budget-friendly",
+        "best_season": "winter",
+        "img": ""
+      },
+      "rom_fco": {
+        "country": "Italy",
+        "city": "Rome",
+        "iata": "FCO",
+        "icao": "LIRF",
+        "airport": "Leonardo da Vinci International Airport",
+        "latitude": 41.8003,
+        "longitude": 12.2389,
+        "temperature": "temperate",
+        "type": "city",
+        "average_cost": "mid-range",
+        "best_season": "spring",
+        "img": ""
+      },
+      "tok_hnd": {
+        "country": "Japan",
+        "city": "Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "airport": "Tokyo Haneda Airport",
+        "latitude": 35.5494,
+        "longitude": 139.7798,
+        "temperature": "temperate",
+        "type": "city",
+        "average_cost": "luxury",
+        "best_season": "autumn",
+        "img": ""
+      }
+    }
+  }
+  

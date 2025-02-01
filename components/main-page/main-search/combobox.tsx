@@ -1,24 +1,26 @@
 // Server Component (AutocompleteServer.js)
 import { Autocomplete, AutocompleteItem } from '@heroui/react';
 
-interface Animal {
+interface Tag {
   key: string;
   label: string;
 }
 
 interface AutocompleteServerProps {
-  animals: Animal[];
+  tags: Tag[];
+  tagLabel: string
 }
 
 export default function AutocompleteServer(props: AutocompleteServerProps) {
   return (
     <Autocomplete
       className="max-w-xs"
-      defaultItems={props.animals}
-      label="Pick a country"
+      defaultItems={props.tags}
+      label={props.tagLabel}
+      size='sm'
     >
-      {props.animals.map((animal) => (
-        <AutocompleteItem key={animal.key}>{animal.label}</AutocompleteItem>
+      {props.tags.map((tag) => (
+        <AutocompleteItem key={tag.key}>{tag.label}</AutocompleteItem>
       ))}
     </Autocomplete>
   );

@@ -1,4 +1,4 @@
-import loginBackground from '@/public/login-background.jpg'; // Import the image
+import loginBackground from '@/public/backgrounds/login-background.jpg'; // Import the image
 
 export default function LoginBack() {
   return (
