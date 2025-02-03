@@ -11,7 +11,10 @@ export default async function PopularDestinations() {
 
                 <div className="flex flex-wrap mb-4 -mx-3">
                     {destinations.map((place, i) => (
-                        <Card key={i} location={place} />
+                        <div key={i} className="w-full p-4 lg:w-1/4 sm:w-1/2 mb-3  group transform transition-all duration-300 relative hover:!opacity-100   group-hover/list:opacity-60">
+                            <Card location={place} />
+                        </div>
+
                     ))}
                 </div>
             </section>
