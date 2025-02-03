@@ -16,7 +16,6 @@ const typeTags = [
     { label: 'Island', key: 'island' },
     { label: 'Lake', key: 'lake' },
     { label: 'Historical', key: 'historical' },
-    { label: 'Countryside', key: 'countryside' },
     { label: 'Snowy Destination', key: 'snowy' }
 ];
 

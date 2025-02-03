@@ -8,7 +8,7 @@ export default function Card({ children, location }: {
     location: Location;
 }) {
     return (
-        <div className="w-full lg:w-1/4 sm:w-1/2 mb-3 p-4 group transform transition-all duration-300 relative hover:!opacity-100 hover:z-10 hover:scale-105 group-hover/list:opacity-60">
+        <div className="w-full lg:w-1/4 sm:w-1/2 mb-3  group transform transition-all duration-300 relative hover:!opacity-100   group-hover/list:opacity-60">
             <div className="flex flex-col justify-between w-full h-full rounded-xl
                relative ">
                 <div className="flex flex-col justify-between">
