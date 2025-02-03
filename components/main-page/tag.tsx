@@ -6,9 +6,9 @@ export default function Tag({ children, tag, icon } : {
     icon?: string;
 }){
   return (
-    <div className="rounded-xl flex py-1 px-2 bg-slate-300 w-fit"> 
+    <div className="rounded-lg flex py-1 px-2 bg-slate-300 w-fit"> 
         <Image
-            src={`/${icon}.svg`}
+            src={`/tags/${icon}.svg`}
             width={24}
             height={24}
             alt={`/${tag}`}

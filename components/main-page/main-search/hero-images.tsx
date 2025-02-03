@@ -36,7 +36,7 @@ export default function HeroImages() {
     }, []);
 
     return (
-        <section className="relative w-full mx-auto h-96">
+        <section className="relative w-full mb-8 mx-auto h-96">
             {/* Background Images */}
             <div className="absolute inset-0 opacity-80 overflow-hidden">
                 <div className="relative w-full h-full overflow-hidden">

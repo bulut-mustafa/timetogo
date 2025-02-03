@@ -8,6 +8,7 @@ export type User = {
 }
 
 export type Location = {
+  id: string;
   airport : string;
   average_cost: string;
   best_season: string;

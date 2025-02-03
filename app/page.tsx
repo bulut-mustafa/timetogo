@@ -3,6 +3,7 @@ import Header from "@/components/main-page/main-header/header";
 import ClientOnlyHome from "@/components/main-page/home-items";
 import SearchBack from "@/components/main-page/main-search/hero-images";
 import SearchBar from "@/components/main-page/main-search/search";
+import PopularDestinations from "@/components/main-page/popular-items";
 const Home =() => {
   
 
@@ -18,6 +19,7 @@ const Home =() => {
       <SearchBar/>
       {/* Render client-side logic that updates the header dynamically */}
       <ClientOnlyHome />
+      <PopularDestinations/>
       {/* Display server-side data */}
 
     </main>

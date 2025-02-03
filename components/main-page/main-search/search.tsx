@@ -22,14 +22,14 @@ const typeTags = [
 
 const averageCostTags = [
     { label: 'Budget', key: 'budget' },
-    { label: 'Mid-range', key: 'mid_range' },
+    { label: 'Mid-range', key: 'mid' },
     { label: 'Luxury', key: 'luxury' }
 ];
 
 export default function SearchBar() {
     return (
         <>
-            <div className="absolute top-80 left-1/2 transform -translate-x-1/2 w-4/5 p-6 bg-white shadow-lg rounded-xl z-50">
+            <div className="absolute opacity-70 top-80 left-1/2 transform -translate-x-1/2 w-4/5 p-6 bg-white shadow-lg rounded-xl z-50">
                 <div className="flex items-center gap-4 justify-center">
                     <div className="w-1/4">
                         <Input size="sm" label="Search a location" type="text" />
