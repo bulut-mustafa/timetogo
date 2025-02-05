@@ -1,25 +1,20 @@
 import React from "react";
 import Image from "next/image";
-import { Tooltip, Button } from "@heroui/react";
 
-export default function Tag({ children, tag, icon }: {
+export default function Tag({ children, tag,  }: {
   children?: React.ReactNode;
   tag?: string;
-  icon?: string;
 }) {
-  const titleTag = (tag ?? "").charAt(0).toUpperCase() + (tag ?? "").slice(1);
   return (
-    <Tooltip content={titleTag}>
-
-      <div className="rounded-lg flex py-1 px-2 bg-slate-100 w-fit">
-        <Image
-          src={`/tags/${icon}.svg`}
-          width={24}
-          height={24}
-          alt={`/${tag}`}
-          className=""
-        />
-      </div>
-    </Tooltip>
+    <div className="rounded-xl flex py-1 px-2 text-white w-fit opacity-80 border-white border">
+      <Image
+        src={`/tags/${tag}.svg`}
+        width={24}
+        height={24}
+        alt={`/${tag}`}
+        className="mr-2"
+      />
+      <div className="text-sm font-light flex align-center justify-center capitalize opacity-100"> {children}{tag}</div>
+    </div>
   );
 }

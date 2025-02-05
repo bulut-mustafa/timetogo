@@ -1,4 +1,3 @@
-'use server';
 import { database } from '../firebase';
 import { Location } from './types';
 import { ref, get } from 'firebase/database';

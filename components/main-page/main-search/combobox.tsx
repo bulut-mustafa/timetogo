@@ -1,4 +1,3 @@
-// Server Component (AutocompleteServer.js)
 import { Autocomplete, AutocompleteItem } from '@heroui/react';
 
 interface Tag {
@@ -8,18 +7,21 @@ interface Tag {
 
 interface AutocompleteServerProps {
   tags: Tag[];
-  tagLabel: string
+  tagLabel: string;
+  selected: string | null;
+  onSelectionChange: (value: string | null) => void;
 }
 
-export default function AutocompleteServer(props: AutocompleteServerProps) {
+export default function AutocompleteServer({ tags, tagLabel, selected, onSelectionChange }: AutocompleteServerProps) {
   return (
     <Autocomplete
       className="max-w-xs"
-      defaultItems={props.tags}
-      label={props.tagLabel}
-      size='sm'
+      label={tagLabel}
+      size="sm"
+      selectedKey={selected}
+      onSelectionChange={(key) => onSelectionChange(key as string)}
     >
-      {props.tags.map((tag) => (
+      {tags.map((tag) => (
         <AutocompleteItem key={tag.key}>{tag.label}</AutocompleteItem>
       ))}
     </Autocomplete>

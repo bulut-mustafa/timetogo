@@ -36,7 +36,7 @@ export default function HeroImages() {
     }, []);
 
     return (
-        <section className="relative w-full mb-8 mx-auto h-96">
+        <section className="relative w-full mb-8 mx-auto h-[32rem]">
             {/* Background Images */}
             <div className="absolute inset-0 opacity-80 overflow-hidden">
                 <div className="relative w-full h-full overflow-hidden">
@@ -45,7 +45,7 @@ export default function HeroImages() {
                             key={index}
                             src={image.image}
                             fetchPriority='high'
-                            className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 ease-in-out transform ${
+                            className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 brightness-50 ease-in-out transform ${
                                 index === currentImageIndex
                                     ? 'z-10 opacity-100 scale-100 translate-x-0 rotate-0'
                                     : 'opacity-0 scale-110 -translate-x-4 -rotate-0'

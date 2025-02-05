@@ -1,27 +1,38 @@
-
+'use client'
+import { useState } from "react";
 import Header from "@/components/main-page/main-header/header";
 import ClientOnlyHome from "@/components/main-page/home-items";
 import SearchBack from "@/components/main-page/main-search/hero-images";
 import SearchBar from "@/components/main-page/main-search/search";
 import PopularDestinations from "@/components/main-page/popular-items";
-const Home =() => {
-  
 
-  // Show loading state while fetching user information
-  
+const Home = () => {
+  const [search, setSearch] = useState("");
+  const [temperature, setTemperature] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
+  const [averageCost, setAverageCost] = useState<string | null>(null);
 
-  // Render based on whether a user is authenticated or not
   return (
     <main className="min-h-screen items-center">
-      {/* Render Header without user state initially */}
       <Header />
-      <SearchBack/>
-      <SearchBar/>
-      {/* Render client-side logic that updates the header dynamically */}
+      <SearchBack />
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        temperature={temperature}
+        setTemperature={setTemperature}
+        type={type}
+        setType={setType}
+        averageCost={averageCost}
+        setAverageCost={setAverageCost}
+      />
       <ClientOnlyHome />
-      <PopularDestinations/>
-      {/* Display server-side data */}
-
+      <PopularDestinations 
+        search={search} 
+        temperature={temperature} 
+        type={type} 
+        averageCost={averageCost} 
+      />
     </main>
   );
 };
