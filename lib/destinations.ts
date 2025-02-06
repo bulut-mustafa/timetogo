@@ -21,3 +21,22 @@ export const getDestinations = async (): Promise<Location[]> => {
     throw new Error('Failed to get the destinations.');
   }
 };
+
+export const getDestination = async (id: string): Promise<Location | null> => {
+  try {
+    const destinationRef = ref(database, `destinations/${id}`);
+    const snapshot = await get(destinationRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    return {
+      id: snapshot.key,
+      ...snapshot.val(),
+    } as Location;
+  } catch (error) {
+    console.error('Error fetching destination from database:', error);
+    throw new Error('Failed to get the destination.');
+  }
+};

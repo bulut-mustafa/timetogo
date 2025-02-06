@@ -1,7 +1,7 @@
 'use server';
 import { database } from '../firebase';
 import { User } from './types';
-import { ref, set } from 'firebase/database';
+import { ref, set, get } from 'firebase/database';
 
 export const addNewUser = async (user: User, userID: string) => {
   try {
@@ -20,3 +20,23 @@ export const addNewUser = async (user: User, userID: string) => {
     throw new Error('Failed to add user to database.');
   }
 };
+
+export async function getUser(userID: string): Promise<User | null> {
+  try {
+    const userRef = ref(database, `users/${userID}`);
+    const snapshot = await get(userRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    const userData = snapshot.val();
+    return {
+      id: userID,
+      ...userData,
+    } as User;
+  } catch (error) {
+    console.error('Error fetching user from database:', error);
+    throw new Error('Failed to get the user.');
+  }
+}

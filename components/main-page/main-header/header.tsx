@@ -1,17 +1,22 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import NavLink from './nav-link';
 import { auth, app } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { User as FirebaseUser } from "firebase/auth";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuth } from '@/context/auth-context';
+import { getUser } from '@/lib/users';
+import { User as UserType } from '@/lib/types';
+import { User } from "@heroui/user";
+import UserDropdown from './avatarDrop';
 
 
 const Header: React.FC = () => {
   const { user, loading } = useAuth();
+  const [userInfo, setUserInfo] = useState<UserType | null>(null);
+  const [userInfoLoading, setUserInfoLoading] = useState(true);
   const router = useRouter();
   async function handleLogout() {
     await signOut(getAuth(app));
@@ -20,6 +25,21 @@ const Header: React.FC = () => {
 
     router.push("/login");
   }
+  useEffect(() => {
+    async function fetchUserInfo() {
+      if (!loading && user?.uid) { // Wait until auth is loaded
+        try {
+          const data = await getUser(user.uid);
+          setUserInfo(data);
+          setUserInfoLoading(false);
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+        }
+      }
+    }
+    fetchUserInfo();
+  }, [user, loading]); // Re-run effect when `user` or `loading` changes
+
   return (
     <header className="flex justify-between items-center py-2 px-16 shadow-md">
       <Link href="/" aria-label="Home" className='flex items-center justify-center gap-8 no-underline'>
@@ -31,11 +51,11 @@ const Header: React.FC = () => {
           priority
         />
       </Link>
-      
+
       {/* Navigation */}
       <nav aria-label="Main navigation">
         <ul className="list-none flex m-0 p-0 gap-6 text-xl">
-          {loading ? (
+          {loading || userInfoLoading ? (
             // Skeleton placeholders while loading
             <>
               <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
@@ -55,10 +75,7 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <li className="flex">
-                  <NavLink href="/profile">Profile</NavLink>
-                </li>
-                <li className="flex">
-                  <button onClick={handleLogout} className="text-blue-600">Log Out</button>
+                   {userInfo && <UserDropdown user={userInfo} loading={userInfoLoading} logOut={handleLogout}/>}
                 </li>
               </>
             )
@@ -67,6 +84,6 @@ const Header: React.FC = () => {
       </nav>
     </header>
   );
-};
+}
 
 export default Header;

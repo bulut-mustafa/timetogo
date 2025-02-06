@@ -1,29 +1,47 @@
 'use client';
 
-import React from "react";
+import React, {useState} from "react";
 import { useAuth } from "@/context/auth-context";
-import Tag from "./tag";
+import SearchBar from "./main-search/search";
+import PopularDestinations from "./popular-items";
 
 const ClientOnlyHome = () => {
   const { user, loading } = useAuth();
 
-  if (loading) {
-    return <p>Loading...</p>; // Optionally show a loading state
-  }
+  const [search, setSearch] = useState("");
+  const [temperature, setTemperature] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
+  const [averageCost, setAverageCost] = useState<string | null>(null);
+
+  
 
   return (
     <div>
       {user ? (
         <div>
-          <h1>Welcome Back, {user.email || "User"}!</h1>
-          <p>Here are your personalized items.</p>
         </div>
       ) : (
         <div>
-          <h1>Welcome to Our Website!</h1>
-          <p>Explore our general content.</p>
         </div>
       )}
+
+
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        temperature={temperature}
+        setTemperature={setTemperature}
+        type={type}
+        setType={setType}
+        averageCost={averageCost}
+        setAverageCost={setAverageCost}
+      />
+      <PopularDestinations
+        search={search}
+        temperature={temperature}
+        type={type}
+        averageCost={averageCost}
+      />
     </div>
   );
 };
