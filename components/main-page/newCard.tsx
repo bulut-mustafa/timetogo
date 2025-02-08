@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import Tag from "./tag";
+import Tag from "../ui/tag";
 import { Location } from "@/lib/types";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
@@ -31,7 +31,7 @@ export default function NewCard({ location }: { location: Location }) {
             {/* Text & Tags */}
             <div className="absolute bottom-4 left-4 text-white z-10">
                 <div className="mb-2">
-                    <Link href={`/location/${location.id}`}>
+                    <Link href={`/destinations/${location.id}`}>
                         <h3 className="text-lg font-semibold">{location.city}</h3>
                     </Link>
                     <p className="text-sm">{location.country}</p>
