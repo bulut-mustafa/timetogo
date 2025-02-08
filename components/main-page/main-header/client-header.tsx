@@ -1,6 +1,6 @@
-'use client'; // Ensure this is a client component
+'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/context/auth-context';
 import { getUser } from '@/lib/users';
 import { User as UserType } from '@/lib/types';
@@ -13,51 +13,50 @@ import NavLink from './nav-link';
 const ClientHeader: React.FC = () => {
   const { user, loading } = useAuth();
   const [userInfo, setUserInfo] = useState<UserType | null>(null);
-  const [userInfoLoading, setUserInfoLoading] = useState(true);
   const router = useRouter();
 
-  async function handleLogout() {
+  const handleLogout = useCallback(async () => {
     await signOut(getAuth(app));
     await fetch("/api/logout");
     router.push("/login");
-  }
+  }, [router]);
 
   useEffect(() => {
-    async function fetchUserInfo() {
-      if (!loading && user?.uid) {
-        try {
-          const data = await getUser(user.uid);
-          setUserInfo(data);
-          setUserInfoLoading(false);
-        } catch (error) {
-          console.error("Error fetching user info:", error);
-        }
-      }
+    if (!loading && user?.uid) {
+      let isMounted = true; // Track component mount state
+
+      getUser(user.uid)
+        .then((data) => {
+          if (isMounted) setUserInfo(data);
+        })
+        .catch((error) => console.error("Error fetching user info:", error));
+
+      return () => {
+        isMounted = false; 
+      };
     }
-    fetchUserInfo();
   }, [user, loading]);
 
-  return (
+  if (loading || userInfo === null) {
+    return (
+      <>
+        <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
+      </>
+    );
+  }
+
+  return user ? (
+    <li className="flex">
+      <UserDropdown user={userInfo} logOut={handleLogout} />
+    </li>
+  ) : (
     <>
-      {loading || userInfoLoading ? (
-        <>
-          <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
-          <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
-        </>
-      ) : !user ? (
-        <>
-          <li className="flex">
-            <NavLink href="/login">Login</NavLink>
-          </li>
-          <li className="flex">
-            <NavLink href="/signup">Sign Up</NavLink>
-          </li>
-        </>
-      ) : (
-        <li className="flex">
-          {userInfo && <UserDropdown user={userInfo} loading={userInfoLoading} logOut={handleLogout} />}
-        </li>
-      )}
+      <li className="flex">
+        <NavLink href="/login">Login</NavLink>
+      </li>
+      <li className="flex">
+        <NavLink href="/signup">Sign Up</NavLink>
+      </li>
     </>
   );
 };

@@ -5,7 +5,8 @@ import SearchBack from "@/components/main-page/main-search/hero-images";
 const LandingPage = () => {
   return (
     <main className="min-h-screen items-center">
-      MAIN PAGE
+      <p>MAIN PAGE</p>
+      <a href="/destinations">Destinations</a>
     </main>
   );
 };

@@ -4,7 +4,6 @@ import {User as UserInfo} from '@/lib/types';
 interface UserDropdownProps {
 
     user: UserInfo;
-    loading: boolean;
     logOut: () => void;
   }
 export default function UserDropdown(userInfo : UserDropdownProps) {
