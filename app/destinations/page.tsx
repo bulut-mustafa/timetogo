@@ -1,13 +1,17 @@
-import ClientOnlyHome from "@/components/main-page/home-items";
-import SearchBack from "@/components/main-page/main-search/hero-images";
-import Header from "@/components/main-page/main-header/header";
+"use client"; 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 const Home = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/main-page"); // Redirect to your main page
+  }, [router]);
+
   return (
     <div className="min-h-screen items-center">
-
-      <Header />
-      <SearchBack />
-      <ClientOnlyHome />
+      <p>Redirecting...</p>
     </div>
   );
 };
