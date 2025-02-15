@@ -21,6 +21,9 @@ export default async function LocationPage({ params }: LocationPageProps) {
         <h1 className="text-2xl font-semibold ml-2 mt-8 mb-4">{location.city}</h1>
         <LocationGallery location={location.city}/>
       </div>
+      <div className="container mx-auto p-2 font-bold mt-4">
+        {location.city} <span className="text-gray-500 font-semibold">in {location.country}</span>
+      </div>
     </>
   );
 }
