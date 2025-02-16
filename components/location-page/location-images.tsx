@@ -101,7 +101,7 @@ export default function LocationGallery({ location }: { location: string }) {
                     {/* Large Preview Image */}
                     {galleryPreview && (
                         <div className="mb-4">
-                            <p className="text-lg font-semibold py-2">{galleryPreview.name}</p>
+                            <p className="text-lg self-start font-semibold py-2">All Pictures</p>
                             <Image src={galleryPreview.image} alt={galleryPreview.name} width={800} height={500} className="w-full h-auto rounded-lg shadow-lg" />
                         </div>
                     )}

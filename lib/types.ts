@@ -1,10 +1,12 @@
 export type User = {
+  id: string;
   name: string;
   lastName: string;
   picture: string;
   from: string;
   email: string;
   password: string;
+  createdAt: string;
 }
 
 export type Location = {
@@ -14,6 +16,7 @@ export type Location = {
   best_season: string;
   city: string;
   country: string;
+  description: string;
   iata: string;
   icao: string;
   img: string;
@@ -22,3 +25,9 @@ export type Location = {
   temperature: string;
   type: string;
 }
+
+export type Place = {
+  name: string;
+  address: string;
+  rating: number | string;
+};
