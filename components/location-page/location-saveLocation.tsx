@@ -4,6 +4,9 @@ import HeroModal from "../ui/modal";
 import Image from "next/image";
 import axios from "axios";
 import { useDisclosure } from "@heroui/react";
+import { now, getLocalTimeZone } from "@internationalized/date";
+
+import { Input, DatePicker, Checkbox, Select,SelectItem } from "@heroui/react";
 
 
 import { Button } from '@heroui/react'
@@ -12,22 +15,19 @@ export default function SaveLocation() {
     const [formData, setFormData] = useState({
         from: "",
         to: "",
-        earliestDate: "",
-        latestDate: "",
+        latestDate: null,
         maxPrice: "",
         minNights: "",
         maxNights: "",
         directOnly: false,
+        maxStepover: "",
         bags: "0",
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type, checked } = e.target as HTMLInputElement;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: type === "checkbox" ? checked : value
-        }));
+    const handleChange = (field: string, value: any) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,137 +41,93 @@ export default function SaveLocation() {
             <HeroModal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
                 <div className="p-4">
                     <h1>Save Location</h1>
-                    <form onSubmit={handleSubmit} className="p-4 space-y-4 w-full max-w-lg">
-                        <div>
-                            <label htmlFor="from" className="block text-sm font-medium text-gray-700">From:</label>
-                            <input
-                                type="text"
-                                name="from"
-                                id="from"
-                                value={formData.from}
-                                onChange={handleChange}
-                                placeholder="Departure City"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                required
-                            />
+                    <form onSubmit={handleSubmit} className="p-4 space-y-4 w-full">
+                        <div className="flex gap-4">
+                            <Input label="Departure" placeholder="Where are you traveling from?" type="text" isRequired
+                                value={formData.from} onChange={(e) => handleChange("from", e.target.value)} />
+                             <Input label="Destination" placeholder="Where to?" type="text" isRequired
+                                value={formData.to} onChange={(e) => handleChange("to", e.target.value)} />
                         </div>
+                        <DatePicker
+                            hideTimeZone
+                            showMonthAndYearPickers
+                            defaultValue={now(getLocalTimeZone())}
+                            label="Latest Date"
+                            variant="bordered"
+                            value={formData.latestDate}
+                            onChange={(value) => handleChange("latestDate", value)}
+                            isRequired
+                        />
 
-                        <div>
-                            <label htmlFor="to" className="block text-sm font-medium text-gray-700">To:</label>
-                            <input
-                                type="text"
-                                name="to"
-                                id="to"
-                                value={formData.to}
-                                onChange={handleChange}
-                                placeholder="Destination City"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                required
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="earliestDate" className="block text-sm font-medium text-gray-700">Earliest Date:</label>
-                                <input
-                                    type="date"
-                                    name="earliestDate"
-                                    id="earliestDate"
-                                    value={formData.earliestDate}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="latestDate" className="block text-sm font-medium text-gray-700">Latest Date:</label>
-                                <input
-                                    type="date"
-                                    name="latestDate"
-                                    id="latestDate"
-                                    value={formData.latestDate}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label htmlFor="maxPrice" className="block text-sm font-medium text-gray-700">Max Price:</label>
-                            <input
+                        <div className="flex gap-4">
+                            <Input
+                                label="Max Price"
+                                placeholder="0.00"
+                                startContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">$</span>
+                                    </div>
+                                }
                                 type="number"
-                                name="maxPrice"
-                                id="maxPrice"
                                 value={formData.maxPrice}
-                                onChange={handleChange}
-                                placeholder="Max Price in USD"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                isRequired
+                                onChange={(e) => handleChange("maxPrice", e.target.value)}
                             />
+                            <Select
+                                label="Bags"
+                                value={formData.bags} isRequired
+                                onSelectionChange={(value) => handleChange("bags", value)}
+                            >
+                                <SelectItem > 0</SelectItem>
+                                <SelectItem > 1</SelectItem>
+                                <SelectItem > 2</SelectItem>
+                                <SelectItem > 3</SelectItem>
+                            </Select>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label htmlFor="minNights" className="block text-sm font-medium text-gray-700">Min Nights:</label>
-                                <input
-                                    type="number"
-                                    name="minNights"
-                                    id="minNights"
-                                    value={formData.minNights}
-                                    onChange={handleChange}
-                                    placeholder="Min Nights"
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                />
+                            <Input
+                                label="Min Nights"
+                                placeholder="Minimum nights stayed"
+                                type="number"
+                                value={formData.minNights}
+                                isRequired
+                                onChange={(e) => handleChange("minNights", e.target.value)}
+                            />
                             </div>
 
                             <div>
-                                <label htmlFor="maxNights" className="block text-sm font-medium text-gray-700">Max Nights:</label>
-                                <input
+                                <Input
+                                    label="Max Nights"
+                                    placeholder="Maxiumum nights stayed"
                                     type="number"
-                                    name="maxNights"
-                                    id="maxNights"
                                     value={formData.maxNights}
-                                    onChange={handleChange}
-                                    placeholder="Max Nights"
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    isRequired
+                                    onChange={(e) => handleChange("maxNights", e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="flex items-center">
-                            <input
-                                type="checkbox"
-                                name="directOnly"
-                                id="directOnly"
-                                checked={formData.directOnly}
-                                onChange={handleChange}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <label htmlFor="directOnly" className="ml-2 block text-sm text-gray-900">Direct Flights Only</label>
-                        </div>
-
-                        <div>
-                            <label htmlFor="bags" className="block text-sm font-medium text-gray-700">Bags:</label>
-                            <select
-                                name="bags"
-                                id="bags"
-                                value={formData.bags}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        <div className="flex items-center gap-8">
+                            <Checkbox className="w-1/2"
+                                isSelected={formData.directOnly}
+                                onValueChange={(value) => handleChange("directOnly", value)}
+                                >Direct Flights Only
+                            </Checkbox>
+                            <Select
+                                label="Stepover"
+                                isDisabled={formData.directOnly}
+                                value={formData.maxStepover}
+                                onSelectionChange={(value) => handleChange("maxStepover", value)}
                             >
-                                <option value="0">0 Bags</option>
-                                <option value="1">1 Bag</option>
-                                <option value="2">2 Bags</option>
-                            </select>
+                                <SelectItem > 0</SelectItem>
+                                <SelectItem > 1</SelectItem>
+                                <SelectItem > 2</SelectItem>
+                            </Select>
                         </div>
 
-                        <button
-                            type="submit"
-                            className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                            Search Flights
-                        </button>
+                        <Button type="submit" color="primary">Button</Button>
                     </form>
                 </div>
 
