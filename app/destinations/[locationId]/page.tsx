@@ -23,7 +23,7 @@ export default async function LocationPage({ params }: LocationPageProps) {
       <div className="container mx-auto">
         <div className="flex justify-between  ml-2 mt-8 mb-4">
           <h1 className="text-2xl font-semibold">{location.city}</h1>
-          <SaveLocation/>
+          <SaveLocation location={location}/>
         </div>
         <LocationGallery location={location.city}/>
       </div>
