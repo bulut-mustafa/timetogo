@@ -1,6 +1,6 @@
 'use server';
 import { db } from '../firebase';
-import { collection, setDoc, getDoc, getDocs, doc, query, where } from "firebase/firestore"; 
+import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where } from "firebase/firestore"; 
 
 const RESERVATIONS_COLLECTION = "reservations";
 
@@ -49,4 +49,32 @@ export const getReservations = async (userId: string) => {
     console.error("Error fetching reservations:", error);
     throw error;
   }
+};
+
+const deleteReservation = async (reservationID: string) => {
+    const reservationId = `${reservationID}`;
+    const reservationRef = doc(db, "reservations", reservationId);
+
+    try {
+        await deleteDoc(reservationRef);
+        console.log("Reservation deleted successfully!");
+    } catch (error) {
+        console.error("Error deleting reservation:", error);
+    }
+};
+const getReservationsByDestination = async (userId: string, destinationId: string) => {
+    const reservationsRef = collection(db, "reservations");
+    const q = query(reservationsRef, where("userId", "==", userId), where("destinationId", "==", destinationId));
+
+    try {
+        const querySnapshot = await getDocs(q);
+        const reservations = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        return reservations;
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        return [];
+    }
 };
