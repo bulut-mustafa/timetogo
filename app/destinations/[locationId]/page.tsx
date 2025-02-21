@@ -4,14 +4,13 @@ import Image from 'next/image';
 import LocationTags from "@/components/location-page/location-tags";
 import LocationGallery from "@/components/location-page/location-images";
 import SaveLocation from "@/components/location-page/location-saveLocation";
-
+import SavedCards from "@/components/location-page/location-savedCards";
 interface LocationPageProps {
   params: { locationId: string };
 }
 
 export default async function LocationPage({ params }: LocationPageProps) {
   const location = await getDestination(params.locationId);
-
 
   if (!location) return null;
 
@@ -30,8 +29,8 @@ export default async function LocationPage({ params }: LocationPageProps) {
       <div className="container flex mx-auto p-2 mt-4">
         <div className="text-lg font-bold w-4/6"> {location.city} <span className="text-lg text-gray-500 font-semibold">in {location.country}</span>
           <p className="text-gray-400 font-normal text-sm mt-4">{location.description}</p>
-          <div className="">
-            
+          <div className="mt-4">
+            <SavedCards destinationId={location.id}></SavedCards>
           </div>
 
         </div>

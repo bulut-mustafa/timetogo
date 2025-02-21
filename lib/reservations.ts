@@ -1,6 +1,7 @@
 'use server';
 import { db } from '../firebase';
 import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where } from "firebase/firestore"; 
+import type { User, SavedReservation } from "@/lib/types";
 
 const RESERVATIONS_COLLECTION = "reservations";
 
@@ -51,7 +52,7 @@ export const getReservations = async (userId: string) => {
   }
 };
 
-const deleteReservation = async (reservationID: string) => {
+export const deleteReservation = async (reservationID: string) => {
     const reservationId = `${reservationID}`;
     const reservationRef = doc(db, "reservations", reservationId);
 
@@ -62,19 +63,23 @@ const deleteReservation = async (reservationID: string) => {
         console.error("Error deleting reservation:", error);
     }
 };
-const getReservationsByDestination = async (userId: string, destinationId: string) => {
+export const getReservationsByDestination = async (
+    userId: string,
+    destinationId: string
+  ): Promise<SavedReservation[]> => {
     const reservationsRef = collection(db, "reservations");
     const q = query(reservationsRef, where("userId", "==", userId), where("destinationId", "==", destinationId));
-
+  
     try {
-        const querySnapshot = await getDocs(q);
-        const reservations = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-        return reservations;
+      const querySnapshot = await getDocs(q);
+      const reservations: SavedReservation[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data() as Omit<SavedReservation, "id">; // Ensure "id" is not in data
+        return { id: doc.id, ...data }; // Merge doc.id separately
+      });
+      return reservations;
     } catch (error) {
-        console.error("Error fetching reservations:", error);
-        return [];
+      console.error("Error fetching reservations:", error);
+      return [];
     }
-};
+  };
+  

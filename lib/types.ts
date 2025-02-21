@@ -31,3 +31,20 @@ export type Place = {
   address: string;
   rating: number | string;
 };
+
+export type SavedReservation = {
+  id: string;
+  bags: string;
+  createdAd: string;
+  destinationId: string;
+  directOnly:boolean;
+  from: string;
+  latestDate: string;
+  maxNights:string;
+  maxPrice: string;
+  maxStepover: string;
+  minNights: string;
+  to: string;
+  userEmail:string;
+  userId: string
+}
