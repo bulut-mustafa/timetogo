@@ -1,12 +1,16 @@
 'use server';
 import { db } from '../firebase';
 import { Location } from './types';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, query, orderBy } from 'firebase/firestore';
 
 export const getDestinations = async (): Promise<Location[]> => {
   try {
     const destinationsRef = collection(db, 'destinations'); // Reference to the collection
-    const snapshot = await getDocs(destinationsRef);
+
+    // Sort by 'counter' field in descending order
+    const q = query(destinationsRef, orderBy('counter', 'desc'));
+
+    const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
       return [];

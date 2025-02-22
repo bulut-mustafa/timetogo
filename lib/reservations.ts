@@ -1,7 +1,8 @@
 'use server';
 import { db } from '../firebase';
-import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where } from "firebase/firestore"; 
+import { collection, setDoc, getDoc,deleteDoc ,getDocs, doc, query, where, updateDoc, increment } from "firebase/firestore"; 
 import type { User, SavedReservation } from "@/lib/types";
+import { revalidatePath } from 'next/cache';
 
 const RESERVATIONS_COLLECTION = "reservations";
 
@@ -17,8 +18,14 @@ export const addReservation = async (userId: string, userEmail: string, formData
       createdAt: new Date(),
     };
 
-    await setDoc(docRef, reservation); // Use setDoc to enforce the custom ID
+    await setDoc(docRef, reservation);
 
+    const destinationRef = doc(db, "destinations", formData.destinationId);
+    
+    await updateDoc(destinationRef, {
+      counter: increment(1) // 
+    });
+    revalidatePath(`/destinations/${formData.destinationId}`); // Revalidate destination page
     return { id: reservationId, ...reservation };
   } catch (error) {
     console.error("Error adding reservation:", error);
