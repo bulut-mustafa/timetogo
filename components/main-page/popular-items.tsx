@@ -7,48 +7,16 @@ import SkeletonCard from "./cardSkeleton"; // Import SkeletonCard
 import { Location } from "@/lib/types";
 
 interface PopularDestinationsProps {
-    search: string;
-    temperature: string | null;
-    type: string | null;
-    averageCost: string | null;
+    filteredDestinations: Location[];
+    loading: boolean
 }
 
-export default function PopularDestinations({ search, temperature, type, averageCost }: PopularDestinationsProps) {
-    const [destinations, setDestinations] = useState<Location[]>([]);
-    const [filteredDestinations, setFilteredDestinations] = useState<Location[]>([]);
-    const [loading, setLoading] = useState(true);
+export default function PopularDestinations({filteredDestinations, loading }: PopularDestinationsProps) {
 
-    // Fetch data inside useEffect (NOT in an async component)
-    useEffect(() => {
-        async function fetchDestinations() {
-            try {
-                const data = await getDestinations();
-                setDestinations(data);
-            } catch (error) {
-                console.error("Error fetching destinations:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchDestinations();
-    }, []);
-
-    // Filter destinations whenever state changes
-    useEffect(() => {
-        const filtered = destinations.filter((place) => {
-            return (
-                (search ? place.city.toLowerCase().includes(search.toLowerCase()) : true) &&
-                (temperature ? place.temperature === temperature : true) &&
-                (type ? place.type === type : true) &&
-                (averageCost ? place.average_cost === averageCost : true)
-            );
-        });
-        setFilteredDestinations(filtered);
-    }, [search, temperature, type, averageCost, destinations]);
 
     return (
-        <section className="px-24 py-8">
-            <h2 className="mb-6">Most visited destinations</h2>
+        <section className="px-24 py-4">
+            <h2 className="mb-4 font-semibold text-lg">Most popular destinations</h2>
 
             {/* Show skeletons while loading */}
             {loading ? (

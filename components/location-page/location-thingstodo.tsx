@@ -18,7 +18,6 @@ export default function ThingsToDo() {
         }
 
         const data = await response.json();
-        console.log(data);
         setPlaces(
           data.map((place: any) => ({
             name: place.name,

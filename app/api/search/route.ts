@@ -1,0 +1,109 @@
+import { getAllReservations } from "@/lib/reservations";
+import { getDestinations } from "@/lib/destinations";
+import axios from "axios";
+import type { SavedReservation, Location } from "@/lib/types";
+import { NextResponse } from "next/server";
+const TEQUILA_ENDPOINT = "https://tequila-api.kiwi.com";
+const TEQUILA_HEADERS = {
+  apikey: process.env.TEQUILA_API_KEY,
+};
+
+function formatDate(date: string) {
+  const dateObj = new Date(date);
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const year = dateObj.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+async function getIataCode(city: string) {
+    try {
+      const location_endpoint = `${TEQUILA_ENDPOINT}/locations/query`;
+      const query = {
+        term: city,
+        location_types: "city",
+      };
+      const config = {
+        headers: TEQUILA_HEADERS,
+        params: query,
+      };
+  
+      const response = await axios.get(location_endpoint, config);
+      const result = response.data.locations;
+      
+      if (!result || result.length === 0) {
+        console.warn(`No IATA code found for city: ${city}`);
+        return null;
+      }
+  
+      return result[0].code;
+    } catch (error) {
+      console.error("Error fetching IATA code:", error);
+      return null;
+    }
+  }
+  
+
+async function getCheapestFlight(reservation: SavedReservation) {
+    try {
+      const from = await getIataCode(reservation.from);
+      const tomorrow = formatDate(new Date().toISOString());
+      const latestDate = formatDate(reservation.latestDate);
+      
+      const searchEndpoint = `${TEQUILA_ENDPOINT}/v2/search`;
+      const oneWayQuery = {
+        fly_from: from,
+        fly_to: reservation.toIata,
+        date_from: tomorrow,
+        date_to: latestDate,
+        flight_type: "oneway",
+        one_for_city: 1,
+        max_stopovers: reservation.maxStepover,
+        curr: "USD",
+        adult_hold_bag: reservation.bags,
+      };
+      const roundQuery = {
+        fly_from: from,
+        fly_to: reservation.toIata,
+        date_from: tomorrow,
+        date_to: latestDate,
+        flight_type: "round",
+        one_for_city: 1,
+        max_stopovers: reservation.maxStepover,
+        nights_in_dst_from: reservation.minNights,
+        nights_in_dst_to: reservation.maxNights,
+        curr: "USD",
+        adult_hold_bag: reservation.bags,
+      };
+      
+      const config = {
+        headers: TEQUILA_HEADERS,
+        params: reservation.roundFlight ? roundQuery : oneWayQuery,
+      };
+  
+      const response = await axios.get(searchEndpoint, config);
+      if (!response.data || response.data.data.length === 0) {
+        console.warn(`No flights found for reservation from ${from} to ${reservation.toIata}`);
+        return null;
+      }
+  
+      return response.data.data[0];
+    } catch (error) {
+      console.error("Error fetching cheapest flight:", error);
+      return null;
+    }
+  }
+  
+
+  export async function GET(request: Request) {
+    try {
+      const allReservations = await getAllReservations();
+  
+      const flightPromises = allReservations.map((reservation) => getCheapestFlight(reservation));
+      const flights = await Promise.all(flightPromises);
+  
+      return NextResponse.json({ reservations: allReservations, flights });
+    } catch (error) {
+      console.error("Error fetching reservations or flights:", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  }

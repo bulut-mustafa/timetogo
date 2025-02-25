@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import HeroModal from "../ui/modal";
 import { useDisclosure } from "@heroui/react";
-import { now, getLocalTimeZone } from "@internationalized/date";
+import { now, getLocalTimeZone, today } from "@internationalized/date";
 import type { Location } from "@/lib/types";
 import { Input, DatePicker, Checkbox, Select, SelectItem } from "@heroui/react";
 import { useAuth } from "@/context/auth-context";
 import { addReservation } from "@/lib/reservations";
 import { Button } from "@heroui/react";
 
-export default function SaveLocation({ location }: { location: Location }) {
+export default function SaveLocation({ location, onSave }: { location: Location, onSave: () => void }) {
     const { user, loading } = useAuth();
     const { isOpen, onOpen: openImageModal, onOpenChange } = useDisclosure();
     const [error, setError] = useState<string | null>(null);
@@ -17,9 +17,12 @@ export default function SaveLocation({ location }: { location: Location }) {
     const [formData, setFormData] = useState({
         destinationId: location.id,
         from: "",
+        fromIata: "",
         to: location.city,
-        latestDate: now(getLocalTimeZone()),
+        toIata: location.iata,
+        latestDate: today(getLocalTimeZone()).add({ months: 6 }),
         maxPrice: "",
+        roundFlight: false,
         minNights: "",
         maxNights: "",
         directOnly: false,
@@ -42,17 +45,15 @@ export default function SaveLocation({ location }: { location: Location }) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(user);
         const saveFormData = {
             ...formData,
-            latestDate: formData.latestDate?.toDate?.().toISOString(),
+            latestDate: formData.latestDate?.toDate?.(getLocalTimeZone()).toISOString(),
             maxStepover: formData.directOnly ? 0 : formData.maxStepover,
         }
-        console.log(saveFormData);
         if (user?.uid && user?.email) {
             addReservation(user.uid, user.email, saveFormData)
                 .then((data) => {
-                    console.log("Reservation added", data);
+                    onSave();
                     onOpenChange();
                 })
                 .catch((error) => {
@@ -68,7 +69,7 @@ export default function SaveLocation({ location }: { location: Location }) {
         <>
             <div className="flex flex-col items-end">
                 <Button className="" color="primary" onPress={handleOpenModal}>
-                    Listeme Ekle
+                    New Reservation
                 </Button>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </div>
@@ -98,7 +99,6 @@ export default function SaveLocation({ location }: { location: Location }) {
                         <DatePicker
                             hideTimeZone
                             showMonthAndYearPickers
-                            defaultValue={now(getLocalTimeZone())}
                             label="Latest Date"
                             variant="bordered"
                             value={formData.latestDate}
@@ -129,7 +129,14 @@ export default function SaveLocation({ location }: { location: Location }) {
                                 onChange={(e) => handleChange("bags", e.target.value)}
                             />
                         </div>
-
+                        <Checkbox
+                                className="w-1/2"
+                                isSelected={formData.roundFlight}
+                                onValueChange={(value) => handleChange("roundFlight", value)}
+                                size="sm"
+                            >
+                                Round Flight
+                        </Checkbox>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <Input
@@ -139,6 +146,7 @@ export default function SaveLocation({ location }: { location: Location }) {
                                     value={formData.minNights}
                                     isRequired
                                     onChange={(e) => handleChange("minNights", e.target.value)}
+                                    isDisabled={!formData.roundFlight}
                                 />
                             </div>
 
@@ -150,6 +158,7 @@ export default function SaveLocation({ location }: { location: Location }) {
                                     value={formData.maxNights}
                                     isRequired
                                     onChange={(e) => handleChange("maxNights", e.target.value)}
+                                    isDisabled={!formData.roundFlight}
                                 />
                             </div>
                         </div>

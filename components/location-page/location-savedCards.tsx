@@ -1,33 +1,54 @@
 'use client'
 import SavedCard from "./location-savedCard";
-import type { User, SavedReservation } from "@/lib/types";
+import type { User, SavedReservation, Location } from "@/lib/types";
 import { useAuth } from "@/context/auth-context";
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Skeleton } from "@heroui/react";
-import {getReservationsByDestination} from '@/lib/reservations';
-
-export default function SavedCards({ destinationId }: { destinationId: string }) {
+import { getReservationsByDestination } from '@/lib/reservations';
+import { useDisclosure } from "@heroui/react"; // Import modal hook
+import ViewReservation from "@/components/ui/view-res-modal"; // Import SaveLocation
+import SaveLocation from "./location-saveLocation";
+export default function SavedCards({ location }: { location: Location }) {
     const { user, loading } = useAuth();
     const [savedReservations, setSavedReservation] = useState<SavedReservation[]>([])
     const [loadingReservations, setLoadingReservations] = useState<boolean>(true); // New loading state
+    const [selectedReservation, setSelectedReservation] = useState<SavedReservation | null>(null);
+
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
-        async function fetchReservations() {
-            if (!user) return;
-
-            setLoadingReservations(true);
-            try {
-                const data = await getReservationsByDestination(user.uid, destinationId);
-                setSavedReservation(data);
-            } catch (error) {
-                console.error("Failed to fetch reservations", error);
-            } finally {
-                setLoadingReservations(false);
-            }
+        if (selectedReservation) {
+            onOpen(); // Open modal only when a new reservation is selected
         }
+    }, [selectedReservation]);
 
+
+    const fetchReservations = useCallback(async () => {
+        if (!user) return;
+        try {
+            const data = await getReservationsByDestination(user.uid, location.id);
+            setSavedReservation(data);
+            setLoadingReservations(false);
+        } catch (error) {
+            console.error("Error fetching reservations:", error);
+        }
+    }, [user?.uid]); 
+
+    useEffect(() => {
         fetchReservations();
-    }, [user, destinationId]);  
+    }, [user?.uid, fetchReservations]);
+
+
+    const handleOpenModal = () => {
+        setSelectedReservation(null); // Reset state first
+        setTimeout(() => {
+            const reservation = savedReservations.find(deal => deal.destinationId === location.id);
+            if (reservation) {
+                setSelectedReservation(reservation);
+            }
+        }, 0); // Ensure state update before opening modal
+    };
+
 
     if (!user) {
         return <p className="text-gray-500">Sign in to see your saved list.</p>;
@@ -35,7 +56,10 @@ export default function SavedCards({ destinationId }: { destinationId: string })
 
     return (
         <div>
-            <p className="font-semibold my-2">Your saved list</p>
+            <div className="flex justify-between">
+                <p className="font-semibold my-2">Your saved list</p>
+                <SaveLocation location={location} onSave={fetchReservations} />
+            </div>
             {loadingReservations ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {[...Array(4)].map((_, index) => (
@@ -46,12 +70,16 @@ export default function SavedCards({ destinationId }: { destinationId: string })
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {savedReservations.length > 0 ? (
                         savedReservations.map((reservation) => (
-                            <SavedCard key={reservation.id} saved={reservation} />
+                            <SavedCard key={reservation.id} saved={reservation} handleOpenModal={handleOpenModal} />
                         ))
                     ) : (
                         <p className="text-gray-500 col-span-full">No saved reservations yet.</p>
                     )}
                 </div>
+            )}
+
+            {selectedReservation && (
+                <ViewReservation reservation={selectedReservation} isOpen={isOpen} onOpenChange={onOpenChange} fetchReservations={fetchReservations} />
             )}
         </div>
     );

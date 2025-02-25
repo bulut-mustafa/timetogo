@@ -1,7 +1,7 @@
 import { Button } from "@heroui/react";
 import type { User, SavedReservation } from "@/lib/types";
 
-export default function SavedCard({saved}:{saved:SavedReservation}) {
+export default function SavedCard({saved, handleOpenModal}:{saved:SavedReservation, handleOpenModal:()=>void}) {
     return (
         <div className="flex flex-col justify-between bg-white rounded-lg p-4 border border-slate-200 w-full mx-2">
             <div className="flex justify-between p-2 text-sm font-light">
@@ -16,7 +16,7 @@ export default function SavedCard({saved}:{saved:SavedReservation}) {
                 <p className="self-end">${saved.maxPrice}</p>
             </div>
             <div className="self-end">
-                <Button color="primary" size="sm">View</Button>
+                <Button color="primary" onPress={handleOpenModal} size="sm">View</Button>
             </div>
         </div>
     );

@@ -35,16 +35,20 @@ export type Place = {
 export type SavedReservation = {
   id: string;
   bags: string;
-  createdAd: string;
+  createdAt: string;
   destinationId: string;
   directOnly:boolean;
   from: string;
+  fromIata: string;
+  roundFlight: boolean;
   latestDate: string;
   maxNights:string;
   maxPrice: string;
   maxStepover: string;
   minNights: string;
   to: string;
+  toIata: string;
+  updatedAt: string;
   userEmail:string;
   userId: string
 }

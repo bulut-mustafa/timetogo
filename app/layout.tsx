@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/auth-context";
 const inter = Inter({ subsets: ["latin"] });
 import { Providers } from "./provider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Time To Go!",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <AuthProvider>
+            <Toaster position="top-center" />
             {children}
           </AuthProvider>
         </Providers>
