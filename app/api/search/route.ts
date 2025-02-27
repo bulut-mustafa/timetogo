@@ -123,32 +123,13 @@ async function getCheapestFlight(reservation: SavedReservation) {
         
         if (flight && flight.price < reservation.maxPrice) {
           // Construct Email Content
-          const flightDeal = {
-            flyFrom: flight.flyFrom,
-            flyTo: flight.flyTo,
-            cityFrom: flight.cityFrom,
-            cityTo: flight.cityTo,
-            price: flight.price,
-            booking_link: flight.deep_link,
-            departure_time: flight.local_departure, // Example field
-            arrival_time: flight.local_arrival, // Example field
-            airline: flight.airline, // Example field (if available)
-            duration: flight.duration.total,
-            userEmail: reservation.userEmail,
-          };
   
           flightDeals.push(flight);
   
           // Send Email
           const emailContent = flightEmailTemplate(
-            flightDeal.flyFrom,
-            flightDeal.flyTo,
-            flightDeal.cityFrom,
-            flightDeal.cityTo,
-            flightDeal.price,
-            flightDeal.booking_link,
-            flightDeal.departure_time,
-            flightDeal.arrival_time,
+            flight,
+            reservation,
           );
           await sendEmail(reservation.userEmail, "🔥 Flight Price Alert!", emailContent);
           console.log(`Email sent to ${reservation.userEmail}`);
