@@ -1,35 +1,39 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { doc, deleteDoc , getDoc} from "firebase/firestore";
+import { NextRequest, NextResponse } from "next/server";
+import { doc, deleteDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
-export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
 
-  const { reservationId, destination } = req.query;
+export const GET = async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+  const reservationId = searchParams.get("reservationId");
+  const destination = searchParams.get("destination");
 
   if (!reservationId || !destination) {
-    return res.status(400).json({ message: "Missing parameters" });
+    return NextResponse.json({ message: "Missing parameters" }, { status: 400 });
   }
 
   try {
-    const reservationRef = doc(db, "reservations", String(reservationId));
+    const reservationRef = doc(db, "reservations", reservationId);
     const reservationDoc = await getDoc(reservationRef);
 
     if (!reservationDoc.exists()) {
-        return res.status(404).json({ message: "Reservation not found" });
+      return NextResponse.json({ message: "Reservation not found" }, { status: 404 });
     }
 
     await deleteDoc(reservationRef);
-    // Remove the subscription from the database
-    
 
-    res.status(200).send(`
+    return new NextResponse(`
       <html>
         <head><title>Unsubscribed</title></head>
         <body style="text-align: center; padding: 50px;">
           <h2>You have been unsubscribed from ${destination} flight alerts.</h2>
         </body>
       </html>
-    `);
+    `, {
+      headers: { "Content-Type": "text/html" },
+      status: 200,
+    });
+
   } catch (error) {
-    res.status(500).json({ message: "Error unsubscribing", error });
+    return NextResponse.json({ message: "Error unsubscribing", error }, { status: 500 });
   }
-}
+};
