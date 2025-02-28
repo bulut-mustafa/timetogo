@@ -2,7 +2,7 @@
 import { db } from '../firebase';
 import { User } from './types';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-
+import { revalidatePath } from 'next/cache';
 export const addNewUser = async (user: User, userID: string) => {
   try {
     const userRef = doc(db, 'users', userID); // Get document reference
@@ -14,6 +14,7 @@ export const addNewUser = async (user: User, userID: string) => {
       email: user.email,
       createdAt: new Date().toISOString(),
     });
+    revalidatePath('/', 'layout')
     console.log('User added to Firestore successfully!');
   } catch (error) {
     console.error('Error adding user to Firestore:', error);

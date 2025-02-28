@@ -129,6 +129,8 @@ export const updateReservation = async (reservationId: string, formData: any) =>
         updatedAt: new Date().toISOString(),
       };
         await updateDoc(docRef, reservation);
+        revalidatePath(`/destinations/${formData.destinationId}`); // Revalidate destination page
+        revalidatePath('/', 'layout')
         console.log("Reservation updated successfully!");
     } catch (error) {
         console.error("Error updating reservation:", error);
