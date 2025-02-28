@@ -26,7 +26,7 @@ export default function SaveLocation({ location, onSave }: { location: Location,
         minNights: "",
         maxNights: "",
         directOnly: false,
-        maxStepover: "",
+        maxStepover:"",
         bags: "",
     });
 
@@ -50,6 +50,7 @@ export default function SaveLocation({ location, onSave }: { location: Location,
             latestDate: formData.latestDate?.toDate?.(getLocalTimeZone()).toISOString(),
             maxStepover: formData.directOnly ? 0 : formData.maxStepover,
         }
+        console.log(saveFormData);
         if (user?.uid && user?.email) {
             addReservation(user.uid, user.email, saveFormData)
                 .then((data) => {
@@ -171,16 +172,14 @@ export default function SaveLocation({ location, onSave }: { location: Location,
                             >
                                 Direct Flights Only
                             </Checkbox>
-                            <Select
-                                label="Stepover"
-                                isDisabled={formData.directOnly}
+                            <Input
+                                label="Max Stepovers"
+                                placeholder="0"
+                                type="number"
                                 value={formData.maxStepover}
-                                onSelectionChange={(value) => handleChange("maxStepover", value)}
-                            >
-                                <SelectItem>0</SelectItem>
-                                <SelectItem>1</SelectItem>
-                                <SelectItem>2</SelectItem>
-                            </Select>
+                                isRequired
+                                onChange={(e) => handleChange("maxStepover", e.target.value)}
+                            />
                         </div>
 
                         <Button type="submit" color="primary">
