@@ -1,3 +1,4 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -12,7 +13,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: process.env.S3_BUCKET_NAME,
+        hostname: 'timetogo-pictures.s3.amazonaws.com',
       },
     ],
   },
