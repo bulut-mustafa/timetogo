@@ -6,7 +6,7 @@ const Header = async () => {
   return (
     <header className="flex justify-between items-center py-2 px-16 shadow-md">
       <Link href="/" aria-label="Home" className="flex items-center justify-center gap-8 no-underline">
-        <Image src="/logo.png" alt="Time to go" width={128} height={128} priority />
+        <Image src="/favicon.png" alt="Time to go" width={128} height={128} priority />
       </Link>
 
       {/* Navigation */}

@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
                         {/* Logo */}
                         <Link href="/" aria-label="Home" className='flex items-center justify-center gap-8  no-underline'>
                             <Image
-                                src="/logo.png"
+                                src="/favicon.png"
                                 alt="Time to go"
                                 width={128}
                                 height={128}
