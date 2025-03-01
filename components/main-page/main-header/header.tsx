@@ -4,7 +4,7 @@ import ClientHeader from './client-header'; // Import the client-side component
 
 const Header = async () => {
   return (
-    <header className="flex justify-between items-center py-2 px-16 shadow-md">
+    <header className="flex justify-between items-center py-2 px-8 sm:px-12 shadow-md">
       <Link href="/" aria-label="Home" className="flex items-center justify-center gap-8 no-underline">
         <Image src="/favicon.png" alt="Time to go" width={128} height={128} priority />
       </Link>

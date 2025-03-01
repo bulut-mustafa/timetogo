@@ -36,7 +36,7 @@ export default function HeroImages() {
     }, []);
 
     return (
-        <section className="relative w-full mb-8 mx-auto h-[32rem]">
+        <section className="relative w-full mb-4 sm:mb-8 mx-auto h-[32rem]">
             {/* Background Images */}
             <div className="absolute inset-0 opacity-80 overflow-hidden">
                 <div className="relative w-full h-full overflow-hidden">
@@ -45,11 +45,10 @@ export default function HeroImages() {
                             key={index}
                             src={image.image}
                             fetchPriority='high'
-                            className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 brightness-50 ease-in-out transform ${
-                                index === currentImageIndex
+                            className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 brightness-50 ease-in-out transform ${index === currentImageIndex
                                     ? 'z-10 opacity-100 scale-100 translate-x-0 rotate-0'
                                     : 'opacity-0 scale-110 -translate-x-4 -rotate-0'
-                            }`}
+                                }`}
                             alt={image.alt}
                         />
                     ))}
@@ -58,9 +57,11 @@ export default function HeroImages() {
 
             {/* Text Overlay */}
             <div className="absolute inset-0 flex   z-20">
-                <div className=" text-white  p-16 bg-opacity-50  rounded-lg">
-                    <h1 className="text-4xl font-bold mb-4">Welcome to Your Next Adventure</h1>
-                    <p className="text-lg">
+                <div className=" text-white  p-8 sm:px-16  bg-opacity-50  rounded-lg">
+                    <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                        Welcome to Your Next Adventure
+                    </h1>
+                    <p className="text-lg sm:text-lg">
                         Explore breathtaking destinations and make unforgettable memories.
                     </p>
                 </div>

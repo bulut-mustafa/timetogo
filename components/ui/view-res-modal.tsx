@@ -167,7 +167,7 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
                             isSelected={formData.directOnly}
                             onValueChange={(value) => handleChange("directOnly", value)}
                         >
-                            Direct Flights Only
+                            Direct Only
                         </Checkbox>
                         <Select
                             label="Stepover"
@@ -182,13 +182,13 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
                     </div>
                     <div className="flex gap-4">
                         <Button type="submit" color="primary">
-                            Save Location
+                            Save
                         </Button>
                         <Button type="button" onPress={() => onOpenChange(false)} color="primary" variant="bordered">
                             Cancel
                         </Button>
                         <Button className="ml-auto" type="button" onPress={handleDelete} color="danger" variant="bordered">
-                            Delete Reservation
+                            Delete
                         </Button>
                     </div>
                 </form>

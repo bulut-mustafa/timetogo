@@ -57,13 +57,13 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
     const savedDestinationIds = new Set(savedDeals.map(deal => deal.destinationId));
     const filteredDestinations = destinations.filter(destination => savedDestinationIds.has(destination.id));
     return (
-        <section className="px-24 pt-4">
-            <h2 className="mb-4 font-semibold text-lg">Your Saved Destinations</h2>
+        <section className="px-8 lg:px-16 pt-2">
+            <h2 className="mb-2 sm:mb-4 font-semibold text-lg">Your Saved Destinations</h2>
 
             {loadingReservations ? (
-                <div className="flex flex-wrap mb-4 -mx-3">
+                <div className="flex flex-no-wrap overflow-x-auto scrollbar-hide xl:flex-wrap mb-4 -mx-3">
                     {[...Array(4)].map((_, i) => (
-                        <div key={i} className="w-full p-4 lg:w-1/4 sm:w-1/2 mb-3">
+                        <div key={i} className="min-w-[250px] md:min-w-[280px] p-4 lg:w-1/4 mb-3 group">
                             <SkeletonCard />
                         </div>
                     ))}
@@ -71,9 +71,9 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
             ) : filteredDestinations.length === 0 ? (
                 <p className="text-center text-gray-500">No saved destinations found. Start adding some.</p>
             ) : (
-                <div className="flex flex-wrap mb-4 -mx-3">
+                <div className="flex flex-no-wrap overflow-x-auto scrollbar-hide xl:flex-wrap mb-4 -mx-3">
                     {filteredDestinations.map((place, i) => (
-                        <div key={i} className="w-full p-4 lg:w-1/4 sm:w-1/2 mb-3 group">
+                        <div key={i} className="min-w-[250px] md:min-w-[280px] p-4 lg:w-1/4 mb-3 group">
                             <NewCard
                                 location={place}
                                 showEyeIcon={true}

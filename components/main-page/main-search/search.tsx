@@ -44,9 +44,9 @@ export default function SearchBar({
     averageCost, setAverageCost 
 }: SearchBarProps) {
     return (
-        <div className="absolute opacity-80 top-80 left-1/2 transform -translate-x-1/2 w-4/5 p-6 bg-white shadow-lg rounded-xl z-50">
-            <div className="flex items-center gap-4 justify-center">
-                <div className="w-1/4">
+        <div className="absolute opacity-80 top-80 left-1/2 transform -translate-x-1/2 w-5/6 sm:w-4/5 p-6 bg-white shadow-lg rounded-xl z-50">
+            <div className="flex flex-col md:flex-row items-center gap-4 justify-center">
+                <div className=" w-full md:w-1/4">
                     <Input 
                         size="sm" 
                         name="search" 
@@ -56,7 +56,7 @@ export default function SearchBar({
                         onChange={(e) => setSearch(e.target.value)} 
                     />
                 </div>
-                <div className="w-1/4">
+                <div className=" w-full md:w-1/4">
                     <AutocompleteServer 
                         tagLabel="Temperature" 
                         tags={temperatureTags} 
@@ -64,7 +64,7 @@ export default function SearchBar({
                         onSelectionChange={setTemperature} 
                     />
                 </div>
-                <div className="w-1/4">
+                <div className=" w-full md:w-1/4">
                     <AutocompleteServer 
                         tagLabel="Type" 
                         tags={typeTags} 
@@ -72,7 +72,7 @@ export default function SearchBar({
                         onSelectionChange={setType} 
                     />
                 </div>
-                <div className="w-1/4">
+                <div className=" w-full md:w-1/4">
                     <AutocompleteServer 
                         tagLabel="Budget" 
                         tags={averageCostTags} 

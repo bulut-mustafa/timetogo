@@ -16,7 +16,7 @@ interface NewCardProps {
 
 export default function NewCard({ location, showEyeIcon = false, onEyeClick }: NewCardProps) {
     return (
-        <div className="group relative w-full h-[360px] rounded-xl overflow-hidden shadow-lg">
+        <div className="group relative w-full sm:h-[360px] h-[240px] rounded-xl overflow-hidden shadow-lg">
             {showEyeIcon && (
                 <button
                     className="absolute border border-white top-2 right-2 p-1 z-10 rounded-lg"

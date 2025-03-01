@@ -15,7 +15,7 @@ interface AutocompleteServerProps {
 export default function AutocompleteServer({ tags, tagLabel, selected, onSelectionChange }: AutocompleteServerProps) {
   return (
     <Autocomplete
-      className="max-w-xs"
+      className="max-w"
       label={tagLabel}
       size="sm"
       selectedKey={selected}

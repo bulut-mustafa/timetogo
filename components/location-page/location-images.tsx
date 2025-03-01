@@ -66,11 +66,11 @@ export default function LocationGallery({ location }: { location: string }) {
                 </div>
             )}
 
-            {/* Image Grid */}
+             {/* Image Grid - Horizontal Scroll on Small Screens */}
             {!loading && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {locations.slice(0, 8).map((loc) => (
-                        <div key={loc.id} className="relative cursor-pointer" onClick={() => handleImageClick(loc)}>
+                        <div key={loc.id} className="relative cursor-pointer min-w-[80%] md:min-w-0 snap-start" onClick={() => handleImageClick(loc)}>
                             <Image src={loc.image} alt={loc.name} width={400} height={300} className="rounded-lg shadow-lg object-cover h-48 w-full" />
                             <div className="absolute bottom-1 left-1 text-xs text-white">{loc.user}</div>
                         </div>
@@ -115,9 +115,8 @@ export default function LocationGallery({ location }: { location: string }) {
                                 alt={loc.name}
                                 width={100}
                                 height={75}
-                                className={`rounded-lg shadow-lg cursor-pointer ${
-                                    galleryPreview?.id === loc.id ? "border-4 border-blue-500" : "opacity-75 hover:opacity-100"
-                                }`}
+                                className={`rounded-lg shadow-lg cursor-pointer ${galleryPreview?.id === loc.id ? "border-4 border-blue-500" : "opacity-75 hover:opacity-100"
+                                    }`}
                                 onClick={() => handleThumbnailClick(loc)}
                             />
                         ))}

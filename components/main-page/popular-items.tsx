@@ -15,14 +15,14 @@ export default function PopularDestinations({filteredDestinations, loading }: Po
 
 
     return (
-        <section className="px-24 py-4">
+        <section className="px-8 lg:px-16 pt-2">
             <h2 className="mb-4 font-semibold text-lg">Most popular destinations</h2>
 
             {/* Show skeletons while loading */}
             {loading ? (
                 <div className="flex flex-wrap mb-4 -mx-3">
-                    {[...Array(4)].map((_, i) => (
-                        <div key={i} className="w-full p-4 lg:w-1/4 sm:w-1/2 mb-3">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="w-full p-4 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 ">
                             <SkeletonCard />
                         </div>
                     ))}
@@ -34,7 +34,7 @@ export default function PopularDestinations({filteredDestinations, loading }: Po
                     {filteredDestinations.map((place, i) => (
                         <div 
                             key={i} 
-                            className="w-full p-4 lg:w-1/4 sm:w-1/2 mb-3 group transform transition-all duration-300 relative hover:!opacity-100 group-hover/list:opacity-60"
+                            className="w-full p-4 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 "
                         >
                             <NewCard location={place} />
                         </div>
