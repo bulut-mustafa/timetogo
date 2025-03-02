@@ -57,7 +57,7 @@ export default function SavedCards({ location }: { location: Location }) {
     return (
         <div>
             <div className="flex justify-between">
-                <p className="font-semibold my-2">Your saved list</p>
+                <p className="font-semibold m-2">Your saved list</p>
                 <SaveLocation location={location} onSave={fetchReservations} />
             </div>
             {loadingReservations ? (
@@ -67,7 +67,7 @@ export default function SavedCards({ location }: { location: Location }) {
                     ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2">
                     {savedReservations.length > 0 ? (
                         savedReservations.map((reservation) => (
                             <SavedCard key={reservation.id} saved={reservation} handleOpenModal={handleOpenModal} />

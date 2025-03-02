@@ -22,15 +22,12 @@ const SignUpPage = () => {
             <main
                 className={`${montserrat.variable} ${nunitoSans.variable} font-sans h-screen flex items-center relative z-10`}
             >
-                <div className="w-2/3 p-12 text-gray-800 flex flex-col justify-center items-start bg-opacity-75">
+                <div className="hidden md:w-1/2 p-12 text-gray-800 md:flex flex-col justify-center items-start bg-opacity-75">
                     <h1 className="text-5xl font-extrabold mb-6 leading-tight font-[var(--font-montserrat)]">
                         Welcome, it&apos;s Time To Go
                     </h1>
                     <p className="text-xl font-light mb-4 font-[var(--font-nunito-sans)]">
                         Your journey starts here.
-                    </p>
-                    <p className="text-lg font-light font-[var(--font-nunito-sans)]">
-                        Sign up to create your personalized dashboard and explore more.
                     </p>
                 </div>
                 <SignUpForm />

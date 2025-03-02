@@ -56,10 +56,10 @@ export default function LocationGallery({ location }: { location: string }) {
     };
 
     return (
-        <div className="p-2">
+        <div className="p-0 md:p-2">
             {/* Loading Skeletons */}
             {loading && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {Array.from({ length: 8 }).map((_, index) => (
                         <div key={index} className="animate-pulse bg-gray-300 rounded-lg h-48 w-full"></div>
                     ))}
@@ -70,8 +70,8 @@ export default function LocationGallery({ location }: { location: string }) {
             {!loading && (
                 <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {locations.slice(0, 8).map((loc) => (
-                        <div key={loc.id} className="relative cursor-pointer min-w-[80%] md:min-w-0 snap-start" onClick={() => handleImageClick(loc)}>
-                            <Image src={loc.image} alt={loc.name} width={400} height={300} className="rounded-lg shadow-lg object-cover h-48 w-full" />
+                        <div key={loc.id} className="relative cursor-pointer min-w-[100%] md:min-w-0 snap-start" onClick={() => handleImageClick(loc)}>
+                            <Image src={loc.image} alt={loc.name} width={400} height={300} className="md:rounded-lg shadow-lg object-cover h-48 w-full" />
                             <div className="absolute bottom-1 left-1 text-xs text-white">{loc.user}</div>
                         </div>
                     ))}
@@ -80,9 +80,11 @@ export default function LocationGallery({ location }: { location: string }) {
 
             {/* Show More Button */}
             {!loading && locations.length > 8 && (
-                <button onClick={openGalleryModal} className="mt-4 w-full text-center bg-gray-800 text-white py-2 rounded-lg">
-                    Show All Photos
-                </button>
+                <div className="px-2">
+                    <button onClick={openGalleryModal} className="mt-2 w-full text-center bg-gray-800 text-white p-2 rounded-lg">
+                        Show All Photos
+                    </button>
+                </div>
             )}
 
             {/* Modal for Selected Image */}

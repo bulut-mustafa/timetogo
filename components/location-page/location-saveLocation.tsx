@@ -68,9 +68,13 @@ export default function SaveLocation({ location, onSave }: { location: Location,
 
     return (
         <>
-            <div className="flex flex-col items-end">
-                <Button className="" color="primary" onPress={handleOpenModal}>
-                    New Reservation
+            <div className="flex flex-col items-end mr-2">
+                <Button 
+                    className="w-24 md:w-32 lg:w-40" 
+                    color="primary" 
+                    onPress={handleOpenModal}
+                >
+                    New
                 </Button>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </div>
