@@ -9,7 +9,7 @@ export default function NavLink({ href, children }: NavLinkProps) {
     <>
       <Link
         href={href}
-        className={`no-underline font-bold px-4 py-2 rounded-md`}
+        className={`no-underline font-bold px-1 py-2 rounded-md text-sm md:text-normal`}
       >
         {children}
       </Link>

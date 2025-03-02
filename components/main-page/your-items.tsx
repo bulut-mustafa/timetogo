@@ -57,7 +57,7 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
     const savedDestinationIds = new Set(savedDeals.map(deal => deal.destinationId));
     const filteredDestinations = destinations.filter(destination => savedDestinationIds.has(destination.id));
     return (
-        <section className="px-8 lg:px-16 pt-2">
+        <section className="px-4 lg:px-16 pt-2">
             <h2 className="mb-2 sm:mb-4 font-semibold text-lg">Your Saved Destinations</h2>
 
             {loadingReservations ? (

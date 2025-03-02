@@ -15,14 +15,14 @@ export default function PopularDestinations({filteredDestinations, loading }: Po
 
 
     return (
-        <section className="px-8 lg:px-16 pt-2">
+        <section className="px-4 lg:px-16 pt-2">
             <h2 className="mb-4 font-semibold text-lg">Most popular destinations</h2>
 
             {/* Show skeletons while loading */}
             {loading ? (
-                <div className="flex flex-wrap mb-4 -mx-3">
+                <div className="flex flex-wrap mb-4">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="w-full p-4 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 ">
+                        <div key={i} className="w-full pt-2 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 ">
                             <SkeletonCard />
                         </div>
                     ))}
@@ -30,11 +30,11 @@ export default function PopularDestinations({filteredDestinations, loading }: Po
             ) : filteredDestinations.length === 0 ? (
                 <p className="text-center text-gray-500">No destinations found.</p>
             ) : (
-                <div className="flex flex-wrap mb-4 -mx-3">
+                <div className="flex flex-wrap mb-4">
                     {filteredDestinations.map((place, i) => (
                         <div 
                             key={i} 
-                            className="w-full p-4 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 "
+                            className="w-full pt-2 xl:w-1/4 md:w-1/3 sm:w-1/2 mb-3 "
                         >
                             <NewCard location={place} />
                         </div>
