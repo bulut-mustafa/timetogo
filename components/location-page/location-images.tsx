@@ -61,8 +61,8 @@ export default function LocationGallery({ location }: { location: string }) {
             {loading && (
                 <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {Array.from({ length: 8 }).map((_, index) => (
-                        <div 
-                            key={index} 
+                        <div
+                            key={index}
                             className="relative cursor-pointer min-w-[100%] md:min-w-0 snap-start"
                         >
                             <div className="animate-pulse bg-gray-300 rounded-lg shadow-lg object-cover h-48 w-full"></div>
@@ -72,7 +72,7 @@ export default function LocationGallery({ location }: { location: string }) {
                 </div>
             )}
 
-             {/* Image Grid - Horizontal Scroll on Small Screens */}
+            
             {!loading && (
                 <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {locations.slice(0, 8).map((loc) => (
@@ -84,7 +84,7 @@ export default function LocationGallery({ location }: { location: string }) {
                 </div>
             )}
 
-            {/* Show More Button */}
+           
             {!loading && locations.length > 8 && (
                 <div className="px-2">
                     <button onClick={openGalleryModal} className="mt-2 w-full text-center bg-gray-800 text-white p-2 rounded-lg">
@@ -97,40 +97,48 @@ export default function LocationGallery({ location }: { location: string }) {
             <HeroModal size="3xl" isOpen={isImageModalOpen} onOpenChange={onImageModalChange}>
                 {selectedImage && (
                     <div>
-                        <p className="py-4 font-semibold text-xl">{selectedImage.name}</p>
                         <Image src={selectedImage.image} alt="Selected Location" width={800} height={600} className="w-full h-auto rounded-lg" />
                     </div>
                 )}
             </HeroModal>
 
-            {/* Modal for All Photos (Large Image + Thumbnail Carousel) */}
-            <HeroModal size="3xl" isOpen={isGalleryModalOpen} onOpenChange={onGalleryModalChange}>
-                <div className="flex flex-col items-center">
-                    {/* Large Preview Image */}
+            {/* Modal for All Photos  */}
+            <HeroModal size="xl" isOpen={isGalleryModalOpen} onOpenChange={onGalleryModalChange}>
+                <div className="flex flex-col items-center w-full">
+                    
                     {galleryPreview && (
-                        <div className="mb-4">
+                        <div className="mb-4 w-full max-w-[800px]">
                             <p className="text-lg self-start font-semibold py-2">All Pictures</p>
-                            <Image src={galleryPreview.image} alt={galleryPreview.name} width={800} height={500} className="w-full h-auto rounded-lg shadow-lg" />
+                            <Image
+                                src={galleryPreview.image}
+                                alt={galleryPreview.name}
+                                width={800}
+                                height={500}
+                                className="w-full h-auto rounded-lg shadow-lg"
+                            />
                         </div>
                     )}
 
-                    {/* Horizontal Thumbnail Carousel */}
-                    <div className="flex gap-2 overflow-x-auto p-2">
-                        {locations.map((loc) => (
-                            <Image
-                                key={loc.id}
-                                src={loc.image}
-                                alt={loc.name}
-                                width={100}
-                                height={75}
-                                className={`rounded-lg shadow-lg cursor-pointer ${galleryPreview?.id === loc.id ? "border-4 border-blue-500" : "opacity-75 hover:opacity-100"
-                                    }`}
-                                onClick={() => handleThumbnailClick(loc)}
-                            />
-                        ))}
+                    
+                    <div className="w-full max-w-[800px] overflow-x-auto p-2">
+                        <div className="flex gap-2 flex-nowrap">
+                            {locations.map((loc) => (
+                                <Image
+                                    key={loc.id}
+                                    src={loc.image}
+                                    alt={loc.name}
+                                    width={100}
+                                    height={75}
+                                    className={`rounded-lg shadow-lg cursor-pointer transition-opacity ${galleryPreview?.id === loc.id ? "border-4 border-blue-500" : "opacity-75 hover:opacity-100"
+                                        }`}
+                                    onClick={() => handleThumbnailClick(loc)}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </HeroModal>
+
         </div>
     );
 }
