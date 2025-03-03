@@ -73,7 +73,7 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
             ) : (
                 <div className="flex flex-no-wrap overflow-x-auto scrollbar-hide xl:flex-wrap mb-4 -mx-3 pl-2">
                     {filteredDestinations.map((place, i) => (
-                        <div key={i} className="min-w-[250px] md:min-w-[280px] p-4 lg:w-1/4 mb-3 group">
+                        <div key={i} className="min-w-[250px] md:min-w-[280px] p-2 lg:w-1/4 mb-3 group">
                             <NewCard
                                 location={place}
                                 showEyeIcon={true}

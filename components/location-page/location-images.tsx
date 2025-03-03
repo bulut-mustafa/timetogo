@@ -61,7 +61,13 @@ export default function LocationGallery({ location }: { location: string }) {
             {loading && (
                 <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {Array.from({ length: 8 }).map((_, index) => (
-                        <div key={index} className="animate-pulse bg-gray-300 rounded-lg h-48 w-full"></div>
+                        <div 
+                            key={index} 
+                            className="relative cursor-pointer min-w-[100%] md:min-w-0 snap-start"
+                        >
+                            <div className="animate-pulse bg-gray-300 rounded-lg shadow-lg object-cover h-48 w-full"></div>
+                            <div className="absolute bottom-1 left-1 w-16 h-4 bg-gray-400 rounded-md"></div>
+                        </div>
                     ))}
                 </div>
             )}
