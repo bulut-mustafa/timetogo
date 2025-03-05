@@ -4,7 +4,7 @@ import AutocompleteServer from "./combobox";
 
 const temperatureTags = [
     { label: 'Hot', key: 'hot' },
-    { label: 'Temperate', key: 'temperate' },
+    { label: 'Moderate', key: 'moderate' },
     { label: 'Cold', key: 'cold' }
 ];
 
@@ -22,7 +22,7 @@ const typeTags = [
 
 const averageCostTags = [
     { label: 'Budget', key: 'budget' },
-    { label: 'Mid-range', key: 'mid' },
+    { label: 'Mid', key: 'mid' },
     { label: 'Luxury', key: 'luxury' }
 ];
 

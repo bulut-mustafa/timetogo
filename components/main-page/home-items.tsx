@@ -8,6 +8,7 @@ import YourDestinations from "./your-items";
 import { Location } from "@/lib/types";
 import { getDestinations } from "@/lib/destinations";
 import SkeletonCard from "./cardSkeleton"; // Import SkeletonCard
+import uploadDestinations from "@/baseItems";
 
 const ClientOnlyHome = () => {
   const { user, loading } = useAuth();
@@ -36,11 +37,17 @@ const ClientOnlyHome = () => {
     fetchDestinations();
   }, []);
 
+  // useEffect(() => {
+  //   uploadDestinations();
+  // }, []);
+
   // Filter destinations whenever state changes
   useEffect(() => {
     const filtered = destinations.filter((place) => {
       return (
-        (search ? place.city.toLowerCase().includes(search.toLowerCase()) : true) &&
+        (search ? place.city.toLowerCase().includes(search.toLowerCase()) || 
+            place.country.toLowerCase().includes(search.toLowerCase())
+          : true) &&
         (temperature ? place.temperature === temperature : true) &&
         (type ? place.type === type : true) &&
         (averageCost ? place.average_cost === averageCost : true)
