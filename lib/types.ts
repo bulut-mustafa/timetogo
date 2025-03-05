@@ -41,6 +41,7 @@ export type SavedReservation = {
   from: string;
   fromIata: string;
   roundFlight: boolean;
+  earliestDate: string;
   latestDate: string;
   maxNights:string;
   maxPrice: string;

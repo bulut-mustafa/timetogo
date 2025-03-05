@@ -20,13 +20,14 @@ export default function SaveLocation({ location, onSave }: { location: Location,
         fromIata: "",
         to: location.city,
         toIata: location.iata,
+        earliestDate: today(getLocalTimeZone()).add({ months: 3 }),
         latestDate: today(getLocalTimeZone()).add({ months: 6 }),
         maxPrice: "",
         roundFlight: false,
         minNights: "",
         maxNights: "",
         directOnly: false,
-        maxStepover:"",
+        maxStepover: "",
         bags: "",
     });
 
@@ -69,9 +70,9 @@ export default function SaveLocation({ location, onSave }: { location: Location,
     return (
         <>
             <div className="flex flex-col items-end mr-2">
-                <Button 
-                    className="w-24 md:w-32 lg:w-40" 
-                    color="primary" 
+                <Button
+                    className="w-24 md:w-32 lg:w-40"
+                    color="primary"
                     onPress={handleOpenModal}
                 >
                     New
@@ -101,15 +102,26 @@ export default function SaveLocation({ location, onSave }: { location: Location,
                                 value={formData.to}
                             />
                         </div>
-                        <DatePicker
-                            hideTimeZone
-                            showMonthAndYearPickers
-                            label="Latest Date"
-                            variant="bordered"
-                            value={formData.latestDate}
-                            onChange={(value) => handleChange("latestDate", value)}
-                            isRequired
-                        />
+                        <div className="flex gap-4">
+                            <DatePicker
+                                hideTimeZone
+                                showMonthAndYearPickers
+                                label="Earliest Date"
+                                variant="bordered"
+                                value={formData.earliestDate}
+                                onChange={(value) => handleChange("earliestDate", value)}
+                                isRequired
+                            /><DatePicker
+                                hideTimeZone
+                                showMonthAndYearPickers
+                                label="Latest Date"
+                                variant="bordered"
+                                value={formData.latestDate}
+                                onChange={(value) => handleChange("latestDate", value)}
+                                isRequired
+                            />
+                        </div>
+
 
                         <div className="flex gap-4">
                             <Input
@@ -125,7 +137,7 @@ export default function SaveLocation({ location, onSave }: { location: Location,
                                 isRequired
                                 onChange={(e) => handleChange("maxPrice", e.target.value)}
                             />
-                           <Input
+                            <Input
                                 label="Bags"
                                 placeholder="0"
                                 type="number"
@@ -135,12 +147,12 @@ export default function SaveLocation({ location, onSave }: { location: Location,
                             />
                         </div>
                         <Checkbox
-                                className="w-1/2"
-                                isSelected={formData.roundFlight}
-                                onValueChange={(value) => handleChange("roundFlight", value)}
-                                size="sm"
-                            >
-                                Round Flight
+                            className="w-1/2"
+                            isSelected={formData.roundFlight}
+                            onValueChange={(value) => handleChange("roundFlight", value)}
+                            size="sm"
+                        >
+                            Round Flight
                         </Checkbox>
                         <div className="grid grid-cols-2 gap-4">
                             <div>

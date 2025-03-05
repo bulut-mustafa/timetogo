@@ -27,6 +27,7 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
         destinationId: reservation.destinationId,
         from: reservation.from,
         to: reservation.to,
+        earliestDate: convertToDateValue(reservation.earliestDate),
         latestDate: convertToDateValue(reservation.latestDate),
         roundFlight: reservation.roundFlight,
         maxPrice: reservation.maxPrice,
@@ -48,6 +49,7 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
         const saveFormData = {
             ...formData,
             latestDate: formData.latestDate?.toDate?.(getLocalTimeZone()).toISOString(),
+            earliestDate: formData.earliestDate?.toDate?.(getLocalTimeZone()).toISOString(),
         }
         const data = JSON.parse(JSON.stringify(saveFormData));
         try {
@@ -93,15 +95,27 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
                             value={formData.to}
                         />
                     </div>
-                    <DatePicker
-                        hideTimeZone
-                        showMonthAndYearPickers
-                        label="Latest Date"
-                        variant="bordered"
-                        value={formData.latestDate}
-                        onChange={(value) => handleChange("latestDate", value)}
-                        isRequired
-                    />
+                    <div className="flex gap-4">
+                        <DatePicker
+                            hideTimeZone
+                            showMonthAndYearPickers
+                            label="Earliest Date"
+                            variant="bordered"
+                            value={formData.earliestDate}
+                            onChange={(value) => handleChange("earliestDate", value)}
+                            isRequired
+                        />
+                        <DatePicker
+                            hideTimeZone
+                            showMonthAndYearPickers
+                            label="Latest Date"
+                            variant="bordered"
+                            value={formData.latestDate}
+                            onChange={(value) => handleChange("latestDate", value)}
+                            isRequired
+                        />
+                    </div>
+
 
                     <div className="flex gap-4">
                         <Input
@@ -169,16 +183,14 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
                         >
                             Direct Only
                         </Checkbox>
-                        <Select
-                            label="Stepover"
-                            isDisabled={formData.directOnly}
+                        <Input
+                            label="Max Stepovers"
+                            placeholder="0"
+                            type="number"
                             value={formData.maxStepover}
-                            onSelectionChange={(value) => handleChange("maxStepover", value)}
-                        >
-                            <SelectItem>0</SelectItem>
-                            <SelectItem>1</SelectItem>
-                            <SelectItem>2</SelectItem>
-                        </Select>
+                            isRequired
+                            onChange={(e) => handleChange("maxStepover", e.target.value)}
+                        />
                     </div>
                     <div className="flex gap-4">
                         <Button type="submit" color="primary">
