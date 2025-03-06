@@ -195,6 +195,7 @@ export default function SaveLocation({ location, onSave }: { location: Location,
                                 value={formData.maxStepover}
                                 isRequired
                                 onChange={(e) => handleChange("maxStepover", e.target.value)}
+                                isDisabled={formData.directOnly}
                             />
                         </div>
 
