@@ -75,7 +75,7 @@ export default function ViewReservation({ reservation, isOpen, onOpenChange, fet
     return (
         <HeroModal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
             <div className="p-4">
-                <h1>Save Location</h1>
+                <h1>Edit Reservation</h1>
                 <form onSubmit={handleSubmit} className="p-4 space-y-4 w-full">
                     <div className="flex gap-4">
                         <Input

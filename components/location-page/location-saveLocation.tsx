@@ -8,6 +8,7 @@ import { Input, DatePicker, Checkbox, Select, SelectItem } from "@heroui/react";
 import { useAuth } from "@/context/auth-context";
 import { addReservation } from "@/lib/reservations";
 import { Button } from "@heroui/react";
+import { toast } from 'react-hot-toast';
 
 export default function SaveLocation({ location, onSave }: { location: Location, onSave: () => void }) {
     const { user, loading } = useAuth();
@@ -52,10 +53,10 @@ export default function SaveLocation({ location, onSave }: { location: Location,
             earliestDate: formData.earliestDate?.toDate?.(getLocalTimeZone()).toISOString(),
             maxStepover: formData.directOnly ? 0 : formData.maxStepover,
         }
-        console.log(saveFormData);
         if (user?.uid && user?.email) {
             addReservation(user.uid, user.email, saveFormData)
                 .then((data) => {
+                    toast.success("Reservation added successfully");
                     onSave();
                     onOpenChange();
                 })
