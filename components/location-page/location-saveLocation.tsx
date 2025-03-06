@@ -20,8 +20,8 @@ export default function SaveLocation({ location, onSave }: { location: Location,
         fromIata: "",
         to: location.city,
         toIata: location.iata,
-        earliestDate: today(getLocalTimeZone()).add({ months: 3 }),
-        latestDate: today(getLocalTimeZone()).add({ months: 6 }),
+        earliestDate: today(getLocalTimeZone()).add({ months: 1 }),
+        latestDate: today(getLocalTimeZone()).add({ months: 3 }),
         maxPrice: "",
         roundFlight: false,
         minNights: "",
@@ -49,6 +49,7 @@ export default function SaveLocation({ location, onSave }: { location: Location,
         const saveFormData = {
             ...formData,
             latestDate: formData.latestDate?.toDate?.(getLocalTimeZone()).toISOString(),
+            earliestDate: formData.earliestDate?.toDate?.(getLocalTimeZone()).toISOString(),
             maxStepover: formData.directOnly ? 0 : formData.maxStepover,
         }
         console.log(saveFormData);
