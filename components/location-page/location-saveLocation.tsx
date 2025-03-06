@@ -81,9 +81,9 @@ export default function SaveLocation({ location, onSave }: { location: Location,
             </div>
 
             <HeroModal size="3xl" isOpen={isOpen} onOpenChange={onOpenChange}>
-                <div className="p-4">
+                <div className="m-4">
                     <h1>Save Location</h1>
-                    <form onSubmit={handleSubmit} className="p-4 space-y-4 w-full">
+                    <form onSubmit={handleSubmit} className="space-y-4 w-full">
                         <div className="flex gap-4">
                             <Input
                                 label="Departure"

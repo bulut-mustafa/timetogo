@@ -66,14 +66,13 @@ async function getIataCode(city: string) {
 async function getCheapestFlight(reservation: SavedReservation) {
     try {
       const from = await getIataCode(reservation.from);
-      const tomorrow = formatDate(new Date().toISOString());
       const latestDate = formatDate(reservation.latestDate);
-      
+      const earliestDate = formatDate(reservation.earliestDate);
       const searchEndpoint = `${TEQUILA_ENDPOINT}/v2/search`;
       const oneWayQuery = {
         fly_from: from,
         fly_to: reservation.toIata,
-        date_from: tomorrow,
+        date_from: earliestDate,
         date_to: latestDate,
         flight_type: "oneway",
         one_for_city: 1,
@@ -84,7 +83,7 @@ async function getCheapestFlight(reservation: SavedReservation) {
       const roundQuery = {
         fly_from: from,
         fly_to: reservation.toIata,
-        date_from: tomorrow,
+        date_from: earliestDate,
         date_to: latestDate,
         flight_type: "round",
         one_for_city: 1,
