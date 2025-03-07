@@ -7,6 +7,8 @@ import { useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { uploadPicture } from "@/lib/users";
 import HeroModal from "../ui/modal";
+const MAX_FILE_SIZE_MB = 2; // Set the max file size limit
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024; // Convert MB to bytes
 interface EditPictureProps {
     user: UserType | null;
     uid: string | undefined;
@@ -70,6 +72,10 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                alert(`File size exceeds ${MAX_FILE_SIZE_MB}MB. Please choose a smaller file.`);
+                return;
+            }
             setSelectedFile(file);
             setPreviewUrl(URL.createObjectURL(file)); // Generate preview URL
             onOpen(); // Open modal for confirmation
