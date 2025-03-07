@@ -19,7 +19,8 @@ export async function POST(req: Request) {
         }
 
         const extension = file.name.split(".").pop();
-        const fileName = `${userID}-img.${extension}`;
+        const timestamp = Date.now();
+        const fileName = `${userID}-${timestamp}.${extension}`;
         const bufferedImage = await file.arrayBuffer();
 
         const userRef = doc(db, "users", userID);
