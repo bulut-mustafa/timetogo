@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase"; // Import your Firestore instance
 
 import { S3 } from "@aws-sdk/client-s3";
@@ -22,7 +22,20 @@ export async function POST(req: Request) {
         const fileName = `${userID}-img.${extension}`;
         const bufferedImage = await file.arrayBuffer();
 
-        // Upload to S3
+        const userRef = doc(db, "users", userID);
+        const snapshot = await getDoc(userRef);
+        const userData = snapshot.data();
+        if( userData!.picture ) {
+            try {
+                await s3.deleteObject({
+                    Bucket: "timetogo-user-pictures",
+                    Key: userData!.picture
+                });
+            } catch (error) {
+                console.error("S3 Delete Error:", error);
+                return NextResponse.json({ error: "S3 delete failed" }, { status: 500 });
+            }
+        }
         try {
             await s3.putObject({
                 Bucket: "timetogo-user-pictures",
@@ -34,8 +47,7 @@ export async function POST(req: Request) {
             console.error("S3 Upload Error:", error);
             return NextResponse.json({ error: "S3 upload failed" }, { status: 500 });
         }
-        // Update Firestore with the new image file name
-        const userRef = doc(db, "users", userID);
+       
         await updateDoc(userRef, { picture: fileName });
 
         return NextResponse.json({ success: true, fileName });
