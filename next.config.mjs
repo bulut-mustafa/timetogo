@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'timetogo-pictures.s3.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'timetogo-user-pictures.s3.amazonaws.com',
+      },
     ],
   },
 };
