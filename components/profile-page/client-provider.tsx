@@ -61,8 +61,8 @@ export default function ClientProviderProfile() {
                             fetchReservations={fetchReservations}
                         />
                     </Tab>
-                    <Tab key="deals" title="Passed Deals">
-                    </Tab>
+                    {/* <Tab key="deals" title="Passed Deals">
+                    </Tab> */}
                 </Tabs>
             </div>
         </>

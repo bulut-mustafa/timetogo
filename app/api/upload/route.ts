@@ -3,6 +3,7 @@ import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase"; // Import your Firestore instance
 
 import { S3 } from "@aws-sdk/client-s3";
+import { revalidatePath } from "next/cache";
 const s3 = new S3({
   region: "ap-southeast-2",
 });
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
         }
        
         await updateDoc(userRef, { picture: fileName });
-
+        revalidatePath(`/profile`, "layout");
         return NextResponse.json({ success: true, fileName });
     } catch (error) {
         console.error("Upload failed:", error);
