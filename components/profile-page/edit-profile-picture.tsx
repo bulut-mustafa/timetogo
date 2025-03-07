@@ -123,7 +123,7 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
                 )}
 
                 {/* Hidden file input */}
-                <input type="file" ref={fileInputRef} accept="image/*" className="hidden" onChange={handleFileChange} />
+                <input type="file" ref={fileInputRef} accept=".jpg,.jpeg,.png"className="hidden" onChange={handleFileChange} />
 
                 <Dropdown>
                     <DropdownTrigger>
