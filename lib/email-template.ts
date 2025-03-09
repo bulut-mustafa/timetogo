@@ -28,7 +28,7 @@ export function flightEmailTemplate(
   const forwardRoute = flight.route.filter((route: any) => route.return === 0);
   const returnRoute = flight.route.filter((route: any) => route.return === 1);
 
-  const unsubscribeLink = `https://timetogo-chi.vercel.app/unsubscribe?reservationId=${reservation.id}&destination=${flight.cityTo}`;
+  const unsubscribeLink = `https://timetogo-chi.vercel.app/unsubscribe?reservationId=${reservation.id}&destination=${reservation.to}`;
 
   return `
     <div style="max-width: 800px; padding: 8px;">
