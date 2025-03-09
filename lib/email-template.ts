@@ -24,12 +24,11 @@ export function flightEmailTemplate(
   flight: any,
   reservation: SavedReservation
 ) {
-  const airline = flight.airlines?.[0] || "Unknown Airline";
 
   const forwardRoute = flight.route.filter((route: any) => route.return === 0);
   const returnRoute = flight.route.filter((route: any) => route.return === 1);
 
-  const unsubscribeLink = `https://timetogo.com/unsubscribe?reservationId=${reservation.id}&destination=${flight.cityTo}`;
+  const unsubscribeLink = `https://timetogo-chi.vercel.app/unsubscribe?reservationId=${reservation.id}&destination=${flight.cityTo}`;
 
   return `
     <div style="max-width: 800px; padding: 8px;">
