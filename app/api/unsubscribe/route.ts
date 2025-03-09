@@ -23,9 +23,18 @@ export const GET = async (req: NextRequest) => {
 
     return new NextResponse(`
       <html>
-        <head><title>Unsubscribed</title></head>
-        <body style="text-align: center; padding: 50px;">
+        <head>
+          <title>Unsubscribed</title>
+          <style>
+            body { text-align: center; padding: 50px; font-family: Arial, sans-serif; }
+            h2 { color: #333; }
+            a { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; }
+            a:hover { background-color: #0056b3; }
+          </style>
+        </head>
+        <body>
           <h2>You have been unsubscribed from ${destination} flight alerts.</h2>
+          <a href="https://timetogo-chi.vercel.app/">Go back to Homepage</a>
         </body>
       </html>
     `, {

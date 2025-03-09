@@ -32,7 +32,7 @@ export default function UserDropdown(userInfo: UserDropdownProps) {
             <p className="font-semibold">Signed in as</p>
             <p className="font-semibold">{userInfo.user.email}</p>
           </DropdownItem>
-          <DropdownItem key="settings">My Settings</DropdownItem>
+          <DropdownItem key="settings" href="/settings">Settings</DropdownItem>
           <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
           <DropdownItem key="logout" color="danger" onPress={userInfo.logOut}>
             Log Out

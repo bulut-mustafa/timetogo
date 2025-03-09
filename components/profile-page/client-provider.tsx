@@ -20,6 +20,13 @@ export default function ClientProviderProfile() {
 
     const router = useRouter();
 
+    // Redirect to main page if no user
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push('/');
+        }
+    }, [loading, user, router]);
+
     // Fetch user data
     useEffect(() => {
         if (!loading && user?.uid) {
