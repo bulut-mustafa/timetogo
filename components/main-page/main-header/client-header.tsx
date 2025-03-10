@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/context/auth-context';
-import { getUser } from '@/lib/users';
-import { User as UserType } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from '@/firebase';
@@ -12,7 +10,6 @@ import NavLink from './nav-link';
 
 const ClientHeader: React.FC = () => {
   const { user, loading } = useAuth();
-  const [userInfo, setUserInfo] = useState<UserType | null>(null);
   const router = useRouter();
 
   const handleLogout = useCallback(async () => {
@@ -21,21 +18,6 @@ const ClientHeader: React.FC = () => {
     router.push("/login");
   }, [router]);
 
-  useEffect(() => {
-    if (!loading && user?.uid) {
-      let isMounted = true;
-
-      getUser(user.uid)
-        .then((data) => {
-          if (isMounted) setUserInfo(data);
-        })
-        .catch((error) => console.error("Error fetching user info:", error));
-
-      return () => {
-        isMounted = false;
-      };
-    }
-  }, [user, loading]);
 
   // Show loading only when `loading` is true
   if (loading) {
@@ -59,7 +41,7 @@ const ClientHeader: React.FC = () => {
   }
 
   // If user is logged in but userInfo is still loading, just show a placeholder
-  if (!userInfo) {
+  if (!user) {
     return (
       <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
     );
@@ -68,7 +50,7 @@ const ClientHeader: React.FC = () => {
   // Render UserDropdown when user is logged in
   return (
     <li className="flex">
-      <UserDropdown user={userInfo} logOut={handleLogout} />
+      <UserDropdown user={user} logOut={handleLogout} />
     </li>
   );
 };

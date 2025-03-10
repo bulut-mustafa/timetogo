@@ -1,19 +1,35 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { signUp, signIn } from './firebaseActions/firebaseAuth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword ,updateProfile,createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '@/firebase';
-import { addNewUser } from './users';
 import { User } from './types';
 
 export const registerNewUser = async (user: User) => {
-  const userUID = await signUp(user);  // Add the user's details to the database
-  await addNewUser(user, userUID);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      user.email,
+      user.password
+    );
 
-  revalidatePath('/', 'layout');
-  redirect('/login');
-  
+    // Get the created user
+    const newUser = userCredential.user;
+
+    // Set display name and picture in Firebase Auth
+    await updateProfile(newUser, {
+      displayName: `${user.name} ${user.lastName}`,
+      photoURL: user.picture || "",
+    });
+
+    // No need to add user to Firestore; Auth already tracks email, displayName, photoURL, createdAt
+    console.log("User registered successfully:", newUser);
+
+    revalidatePath('/', 'layout');
+    redirect('/login');
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to sign up.");
+  }
 };
 
 export const logIn = async (email: string, password: string) => {

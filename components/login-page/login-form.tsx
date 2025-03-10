@@ -46,6 +46,7 @@ const LoginForm: React.FC = () => {
                 formData.email,
                 formData.password
             );
+            console.log(credential)
             const idToken = await credential.user.getIdToken();
 
             await fetch("/api/login", {

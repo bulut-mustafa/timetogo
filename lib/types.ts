@@ -1,13 +1,18 @@
 export type User = {
-  id: string;
   name: string;
   lastName: string;
-  picture: string;
+  picture?: string;
   email: string;
   password: string;
-  createdAt: string;
-}
+};
 
+
+export type authUser = {
+  uid: string;
+  displayName: string | null;
+  photoURL?: string | null;
+  email: string | null;
+};
 export type Location = {
   id: string;
   airport : string;

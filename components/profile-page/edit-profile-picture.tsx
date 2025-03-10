@@ -1,16 +1,16 @@
 'use client';
 import Image from "next/image";
 import { useRef } from "react";
-import { User as UserType } from '@/lib/types';
+import {  authUser } from '@/lib/types';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@heroui/react";
 import { useDisclosure } from "@heroui/react";
 import { useState } from "react";
-import { uploadPicture } from "@/lib/users";
+import { getAuth, updateProfile } from "firebase/auth";
 import HeroModal from "../ui/modal";
 const MAX_FILE_SIZE_MB = 2; // Set the max file size limit
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024; // Convert MB to bytes
 interface EditPictureProps {
-    user: UserType | null;
+    user: authUser | null;
     uid: string | undefined;
 }
 
@@ -96,7 +96,16 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
             const formData = new FormData();
             formData.append("file", selectedFile);
             formData.append("userID", uid);
-    
+            if(user?.photoURL){
+                formData.append("oldFile", user.photoURL);
+                const response = await fetch("/api/delete", {
+                    method: "POST",
+                    body: formData,
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || "Delete failed");
+            }
+            // 🔹 Upload the image via API
             const response = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,
@@ -105,7 +114,18 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || "Upload failed");
     
-            console.log("Profile picture updated successfully!", data.fileName);
+            // 🔹 Get the new file URL from API response
+            const newImageUrl = data.fileName;
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                updateProfile(currentUser, { photoURL: newImageUrl });
+            } else {
+                console.error("No authenticated user found.");
+            }
+            
+            console.log("Profile picture updated successfully!");
+    
             window.location.href = "/profile"; // Refresh the profile page
         } catch (error) {
             console.error("Upload failed:", error);
@@ -114,22 +134,28 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
             onClose();
         }
     };
-
+    
     return (
         <>
-        
+
             <div className="relative w-20 h-20 overflow-hidden ml-2">
                 {/* Profile Picture or Initials */}
-                {user && user.picture ? (
-                    <Image src={`https://timetogo-user-pictures.s3.amazonaws.com/${user.picture}`} alt={user.name} width={80} height={80} className="object-cover w-full h-full rounded-full" />
+                {user && user.photoURL ? (
+                    <Image src={`https://timetogo-user-pictures.s3.amazonaws.com/${user.photoURL}`} alt={'User Picture'} width={80} height={80} className="object-cover w-full h-full rounded-full" />
                 ) : (
                     <div className="flex items-center justify-center w-full h-full text-xl font-bold text-white bg-gray-400 rounded-full">
-                        {user ? `${user.name.charAt(0)}${user.lastName.charAt(0)}` : "N/A"}
+                        {user?.displayName
+                            ? user.displayName
+                                .split(" ") // Split the name by spaces
+                                .map(word => word.charAt(0)) // Get the first letter of each word
+                                .join("") // Join them together
+                                .toUpperCase() // Convert to uppercase
+                            : "N/A"}
                     </div>
                 )}
 
                 {/* Hidden file input */}
-                <input type="file" ref={fileInputRef} accept=".jpg,.jpeg,.png"className="hidden" onChange={handleFileChange} />
+                <input type="file" ref={fileInputRef} accept=".jpg,.jpeg,.png" className="hidden" onChange={handleFileChange} />
 
                 <Dropdown>
                     <DropdownTrigger>
@@ -139,11 +165,11 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Dropdown menu with icons" variant="faded">
                         <DropdownItem key="edit" onPress={handleChangePictureClick}
-                        startContent={<EditDocumentIcon className={iconClasses} />}>
+                            startContent={<EditDocumentIcon className={iconClasses} />}>
                             Change Picture
                         </DropdownItem>
                         <DropdownItem key="delete" className="text-danger" color="danger"
-                        startContent={<DeleteDocumentIcon className={cn(iconClasses, "text-danger")} />} >
+                            startContent={<DeleteDocumentIcon className={cn(iconClasses, "text-danger")} />} >
                             Remove Picture
                         </DropdownItem>
                     </DropdownMenu>

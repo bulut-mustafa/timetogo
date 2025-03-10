@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { app, auth } from "../../firebase";
 import { useRouter } from "next/navigation";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import { database } from '../../firebase';
 import { ref, set } from 'firebase/database';
 import { Input } from "@heroui/react";
@@ -56,15 +56,14 @@ const SignUpForm: React.FC = () => {
 
         try {
             const userCredential = await createUserWithEmailAndPassword(getAuth(app), formData.email, formData.password);
-            const userRef = ref(database, `users/${userCredential.user.uid}`);
-            await set(userRef, {
-                name: formData.name,
-                lastName: formData.lastname,
-                from: '',
-                picture: '',
-                email: formData.email,
-                createdAt: new Date().toISOString(),
-            });
+            // Get the created user
+                const newUser = userCredential.user;
+            
+                // Set display name and picture in Firebase Auth
+                await updateProfile(newUser, {
+                  displayName: `${formData.name} ${formData.lastname}`,
+                  photoURL: "",
+                });
             router.push("/login");
         } catch (e) {
             setError((e as Error).message);

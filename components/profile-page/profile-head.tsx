@@ -1,12 +1,10 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User as UserType } from '@/lib/types';
-import Image from 'next/image';
-import { format } from 'path';
+import { authUser } from '@/lib/types';
 import EditPicture from './edit-profile-picture';
 interface ProfileHeadProps {
-    user: UserType | null;
+    user: authUser | null;
     uid: string | undefined;
     userInfoLoading: boolean;
 }
@@ -51,11 +49,10 @@ export default function ProfileHead({ user, uid, userInfoLoading }: ProfileHeadP
             </div>
             <div className='flex flex-col ml-4 gap-2'>
                 <div>
-                    <p className="text-lg font-semibold">{user.name} {user.lastName}</p>
+                    <p className="text-lg font-semibold">{user.displayName}</p>
                 </div>
                 <div>
                     <p className="text-sm text-gray-500">{user.email}</p>
-                    <p className="text-sm text-gray-500">since {formatDate(user.createdAt)}</p>
                 </div>
             </div>
         </div>

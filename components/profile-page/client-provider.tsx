@@ -1,8 +1,7 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/context/auth-context';
-import { getUser } from '@/lib/users';
-import { User as UserType, SavedReservation } from '@/lib/types';
+import { SavedReservation } from '@/lib/types';
 import { getReservations } from "@/lib/reservations";
 import { useRouter } from 'next/navigation';
 import ProfileHead from './profile-head';
@@ -11,8 +10,6 @@ import YourReservations from './your-reservations';
 
 export default function ClientProviderProfile() {
     const { user, loading } = useAuth();
-    const [userInfo, setUserInfo] = useState<UserType | null>(null);
-    const [userInfoLoad, setUserInfoLoad] = useState<boolean>(true);
     
     // Lifted state for reservations
     const [savedReservations, setSavedReservations] = useState<SavedReservation[]>([]);
@@ -27,17 +24,6 @@ export default function ClientProviderProfile() {
         }
     }, [loading, user, router]);
 
-    // Fetch user data
-    useEffect(() => {
-        if (!loading && user?.uid) {
-            getUser(user.uid)
-                .then((data) => {
-                    setUserInfo(data);
-                    setUserInfoLoad(false);
-                })
-                .catch((error) => console.error("Error fetching user info:", error));
-        }
-    }, [user, loading]);
 
     // Fetch reservations only once
     const fetchReservations = useCallback(async () => {
@@ -58,7 +44,7 @@ export default function ClientProviderProfile() {
 
     return (
         <>
-            <ProfileHead user={userInfo} uid={user?.uid} userInfoLoading={userInfoLoad} />
+            <ProfileHead user={user} uid={user?.uid} userInfoLoading={loading} />
             <div className="flex w-full flex-col">
                 <Tabs aria-label="Options" variant='underlined'>
                     <Tab key="reservations" title="Your Reservations">
