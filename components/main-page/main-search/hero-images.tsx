@@ -12,15 +12,15 @@ import mountainImg from '@/public/backgrounds/mountainbackground.jpg';
 import snowImg from '@/public/backgrounds/snowmountainbackground.jpg';
 
 const images = [
-    { image: beachImg, alt: 'Clear water beach' },
-    { image: cappaImg, alt: 'Cappadocia hot air balloons' },
-    { image: cityImg, alt: 'Big city' },
-    { image: desertImg, alt: 'Sahara desert' },
-    { image: forestImg, alt: 'Green forest' },
-    { image: lakeImg, alt: 'Mountain lake' },
-    { image: mountainImg, alt: 'Mountain' },
-    { image: snowImg, alt: 'Snowy mountain' },
-];
+    { image: beachImg, alt: "Beautiful clear water beach with white sand" },
+    { image: cappaImg, alt: "Hot air balloons flying over Cappadocia at sunrise" },
+    { image: cityImg, alt: "Skyline of a modern metropolitan city at night" },
+    { image: desertImg, alt: "Golden sand dunes under a bright blue sky" },
+    { image: forestImg, alt: "Dense green forest with sunlight filtering through trees" },
+    { image: lakeImg, alt: "Scenic mountain lake reflecting the sky" },
+    { image: mountainImg, alt: "Majestic mountain peak with rugged cliffs" },
+    { image: snowImg, alt: "Snow-covered mountain with a clear blue sky" },
+  ];
 
 export default function HeroImages() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -44,7 +44,7 @@ export default function HeroImages() {
                         <Image
                             key={index}
                             src={image.image}
-                            fetchPriority='high'
+                            priority
                             className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 brightness-50 ease-in-out transform ${index === currentImageIndex
                                     ? 'z-10 opacity-100 scale-100 translate-x-0 rotate-0'
                                     : 'opacity-0 scale-110 -translate-x-4 -rotate-0'

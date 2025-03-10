@@ -37,6 +37,7 @@ export default function LocationGallery({ location }: { location: string }) {
                 }
             } catch (error) {
                 console.error("Error fetching images:", error);
+                setLocations([]); // Ensure locations is empty
             } finally {
                 setLoading(false);
             }

@@ -1,14 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@/context/auth-context";
 import SearchBar from "./main-search/search";
 import PopularDestinations from "./popular-items";
 import YourDestinations from "./your-items";
 import { Location } from "@/lib/types";
 import { getDestinations } from "@/lib/destinations";
-import SkeletonCard from "./cardSkeleton"; // Import SkeletonCard
-import uploadDestinations from "@/baseItems";
+import SkeletonCard from "./cardSkeleton";
 
 const ClientOnlyHome = () => {
   const { user, loading } = useAuth();
@@ -18,10 +17,8 @@ const ClientOnlyHome = () => {
   const [type, setType] = useState<string | null>(null);
   const [averageCost, setAverageCost] = useState<string | null>(null);
 
-
   const [destinations, setDestinations] = useState<Location[]>([]);
-  const [filteredDestinations, setFilteredDestinations] = useState<Location[]>([]);
-  const [destinationsloading, setDestinationsLoading] = useState(true);
+  const [destinationsLoading, setDestinationsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchDestinations() {
@@ -37,37 +34,22 @@ const ClientOnlyHome = () => {
     fetchDestinations();
   }, []);
 
-  // useEffect(() => {
-  //   uploadDestinations();
-  // }, []);
-
-  // Filter destinations whenever state changes
-  useEffect(() => {
-    const filtered = destinations.filter((place) => {
+  
+  const filteredDestinations = useMemo(() => {
+    return destinations.filter((place) => {
       return (
-        (search ? place.city.toLowerCase().includes(search.toLowerCase()) || 
-            place.country.toLowerCase().includes(search.toLowerCase())
-          : true) &&
-        (temperature ? place.temperature === temperature : true) &&
-        (type ? place.type === type : true) &&
-        (averageCost ? place.average_cost === averageCost : true)
+        (!search ||
+          place.city.toLowerCase().includes(search.toLowerCase()) ||
+          place.country.toLowerCase().includes(search.toLowerCase())) &&
+        (!temperature || place.temperature === temperature) &&
+        (!type || place.type === type) &&
+        (!averageCost || place.average_cost === averageCost)
       );
     });
-    setFilteredDestinations(filtered);
   }, [search, temperature, type, averageCost, destinations]);
-
 
   return (
     <div>
-      {user ? (
-        <div>
-        </div>
-      ) : (
-        <div>
-        </div>
-      )}
-
-
       <SearchBar
         search={search}
         setSearch={setSearch}
@@ -78,17 +60,18 @@ const ClientOnlyHome = () => {
         averageCost={averageCost}
         setAverageCost={setAverageCost}
       />
-      {!user ? "" :
-          <YourDestinations
-            destinations={filteredDestinations}
-            userId={user?.uid || ""}
-            loading={loading}
-          />
-      }
+
+      {user && (
+        <YourDestinations
+          destinations={filteredDestinations}
+          userId={user?.uid || ""}
+          loading={loading}
+        />
+      )}
 
       <PopularDestinations
         filteredDestinations={filteredDestinations}
-        loading={destinationsloading}
+        loading={destinationsLoading}
       />
     </div>
   );
