@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import beachImg from '@/public/backgrounds/beachbackground.jpg';
-import cappaImg from '@/public/backgrounds/cappadociabackground.jpg';
-import cityImg from '@/public/backgrounds/citybackground.jpg';
-import desertImg from '@/public/backgrounds/desertbackground.jpg';
-import forestImg from '@/public/backgrounds/forestbackground.jpg';
-import lakeImg from '@/public/backgrounds/lakebackground.jpg';
-import mountainImg from '@/public/backgrounds/mountainbackground.jpg';
-import snowImg from '@/public/backgrounds/snowmountainbackground.jpg';
+import beachImg from '@/public/backgrounds/beachbackground_opt.jpg';
+import cappaImg from '@/public/backgrounds/cappadociabackground_opt.jpg';
+import cityImg from '@/public/backgrounds/citybackground_opt.jpg';
+import desertImg from '@/public/backgrounds/desertbackground_opt.jpg';
+import forestImg from '@/public/backgrounds/forestbackground_opt.jpg';
+import lakeImg from '@/public/backgrounds/lakebackground_opt.jpg';
+import mountainImg from '@/public/backgrounds/mountainbackground_opt.jpg';
+import snowImg from '@/public/backgrounds/snowmountainbackground_opt.jpg';
 
 const images = [
     { image: beachImg, alt: "Beautiful clear water beach with white sand" },
@@ -20,7 +20,7 @@ const images = [
     { image: lakeImg, alt: "Scenic mountain lake reflecting the sky" },
     { image: mountainImg, alt: "Majestic mountain peak with rugged cliffs" },
     { image: snowImg, alt: "Snow-covered mountain with a clear blue sky" },
-  ];
+];
 
 export default function HeroImages() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -44,20 +44,21 @@ export default function HeroImages() {
                         <Image
                             key={index}
                             src={image.image}
-                            priority
-                            className={`absolute top-0 left-0 w-full h-full object-cover transition-all duration-500 brightness-50 ease-in-out transform ${index === currentImageIndex
-                                    ? 'z-10 opacity-100 scale-100 translate-x-0 rotate-0'
-                                    : 'opacity-0 scale-110 -translate-x-4 -rotate-0'
-                                }`}
                             alt={image.alt}
+                            fill
+                            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${index === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0'}`}
+                            priority={index === 0} // Only prioritize the first image
+                            loading={index === 0 ? 'eager' : 'lazy'} // Lazy-load other images
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1920px"
+                            quality={75} // Reduce file size
                         />
                     ))}
                 </div>
             </div>
 
             {/* Text Overlay */}
-            <div className="absolute inset-0 flex   z-20">
-                <div className=" text-white  p-8 sm:px-16  bg-opacity-50  rounded-lg">
+            <div className="absolute inset-0 flex z-20">
+                <div className="text-white p-8 sm:px-16 bg-opacity-50 rounded-lg">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-4">
                         Welcome to Your Next Adventure
                     </h1>

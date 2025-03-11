@@ -20,7 +20,7 @@ export default function NewCard({ location, showEyeIcon = false, onEyeClick }: N
             {showEyeIcon && (
                 <button
                     className="absolute border border-white top-2 right-2 p-1 z-10 rounded-lg"
-                    onClick={onEyeClick} 
+                    onClick={onEyeClick}
                 >
                     <Image src={Eye} alt="show deal" width={16} height={16} />
                 </button>
@@ -29,10 +29,11 @@ export default function NewCard({ location, showEyeIcon = false, onEyeClick }: N
             <Image
                 src={location.img}
                 alt={location.city}
+                fill
                 className="absolute inset-0 w-full h-full object-cover"
-                width={400}
-                height={300}
-                priority
+                sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 400px"
+                quality={75} // Reduce file size
+                loading="lazy" // Defer loading for non-critical images
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
