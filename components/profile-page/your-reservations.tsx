@@ -3,15 +3,14 @@
 import { useState } from 'react';
 import { useDisclosure } from "@heroui/react";
 import { SavedReservation } from "@/lib/types";
-import { toast } from 'react-hot-toast';
-import ReservationCard from "./reservation-card"; // Import ReservationCard
-import ReservationCardSkeleton from "./reservation-card-skeleton"; // Import Skeleton
+import ReservationCard from "./reservation-card"; 
+import ReservationCardSkeleton from "./reservation-card-skeleton"; 
 import ViewReservation from '@/components/ui/view-res-modal';
 
 interface ReservationProps {
     savedReservations: SavedReservation[];
     loadingReservations: boolean;
-    fetchReservations: () => Promise<void>; // Function to refresh data
+    fetchReservations: () => Promise<void>; 
 }
 
 export default function YourReservations({ savedReservations, loadingReservations, fetchReservations }: ReservationProps) {

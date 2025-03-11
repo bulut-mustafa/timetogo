@@ -63,7 +63,7 @@ const LoginForm: React.FC = () => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                // If user is signed in, redirect to home or another page
+                // If user is signed in, redirect to home
                 router.push('/');
             } else {
                 // If no user is signed in, stop loading
@@ -85,11 +85,11 @@ const LoginForm: React.FC = () => {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Email Input */}
+            
             <div>
                 <Input isRequired label="Email" name='email' type="email" variant={'flat'} value={formData.email} onChange={handleInputChange} />
             </div>
-            {/* Password Input */}
+            
             <div>
                 <Input isRequired label="Password" name='password' 
                 endContent={
@@ -114,7 +114,7 @@ const LoginForm: React.FC = () => {
             </div>
             {/* Error Message */}
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            {/* Submit Button */}
+            
             <button type="submit" className="w-full text-white bg-blue-500 rounded-lg p-2.5">
                 Log In
             </button>

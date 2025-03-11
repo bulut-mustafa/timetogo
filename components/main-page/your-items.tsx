@@ -4,10 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { getReservations } from "@/lib/reservations";
 import NewCard from "./newCard";
 import SkeletonCard from "./cardSkeleton";
-import ViewReservation from "@/components/ui/view-res-modal"; // Import SaveLocation
-import { useDisclosure } from "@heroui/react"; // Import modal hook
+import ViewReservation from "@/components/ui/view-res-modal"; 
+import { useDisclosure } from "@heroui/react";
 import { Location, SavedReservation } from "@/lib/types";
-import { toast } from 'react-hot-toast';
 
 interface PopularDestinationsProps {
     destinations: Location[];
@@ -24,7 +23,7 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     useEffect(() => {
         if (selectedReservation) {
-            onOpen(); // Open modal only when a new reservation is selected
+            onOpen(); 
         }
     }, [selectedReservation]);
     const fetchReservations = useCallback(async () => {
@@ -35,23 +34,23 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
         } catch (error) {
             console.error("Error fetching reservations:", error);
         }
-    }, [userId]); // ✅ Now fetchReservations stays the same unless userId changes
+    }, [userId]); 
     
     useEffect(() => {
         fetchReservations();
-    }, [userId, fetchReservations]); // ✅ Ensure it re-runs when the function updates
+    }, [userId, fetchReservations]); 
     
 
 
-    // Function to handle opening the modal
+    
     const handleOpenModal = (location: Location) => {
-        setSelectedReservation(null); // Reset state first
+        setSelectedReservation(null);
         setTimeout(() => {
             const reservation = savedDeals.find(deal => deal.destinationId === location.id);
             if (reservation) {
                 setSelectedReservation(reservation);
             }
-        }, 0); // Ensure state update before opening modal
+        }, 0);
     };
 
     const savedDestinationIds = new Set(savedDeals.map(deal => deal.destinationId));

@@ -32,7 +32,7 @@ export default function DeleteUser() {
             const credential = EmailAuthProvider.credential(user.email, currentPassword);
             await reauthenticateWithCredential(user, credential);
 
-            // Update password
+            // Delete user
             await deleteUser(user);
             window.alert("Account deleted successfully!");
             router.push("/");

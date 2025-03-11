@@ -6,17 +6,17 @@ import axios from "axios";
 import { useDisclosure } from "@heroui/react";
 
 export default function LocationGallery({ location }: { location: string }) {
-    // State for locations
+    
     const [locations, setLocations] = useState<{ id: string; name: string; image: string; user: string }[]>([]);
     const [selectedImage, setSelectedImage] = useState<{ id: string; name: string; image: string; user: string } | null>(null);
     const [galleryPreview, setGalleryPreview] = useState<{ id: string; name: string; image: string; user: string } | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Separate modal states
+    
     const { isOpen: isImageModalOpen, onOpen: openImageModal, onOpenChange: onImageModalChange } = useDisclosure();
     const { isOpen: isGalleryModalOpen, onOpen: openGalleryModal, onOpenChange: onGalleryModalChange } = useDisclosure();
 
-    // Fetch images on mount
+    // fetch images
     useEffect(() => {
         async function fetchImages() {
             setLoading(true);
@@ -33,11 +33,11 @@ export default function LocationGallery({ location }: { location: string }) {
 
                 setLocations(formattedLocations);
                 if (formattedLocations.length > 0) {
-                    setGalleryPreview(formattedLocations[0]); // Set first image as initial preview
+                    setGalleryPreview(formattedLocations[0]); 
                 }
             } catch (error) {
                 console.error("Error fetching images:", error);
-                setLocations([]); // Ensure locations is empty
+                setLocations([]); 
             } finally {
                 setLoading(false);
             }
@@ -45,20 +45,20 @@ export default function LocationGallery({ location }: { location: string }) {
         fetchImages();
     }, [location]);
 
-    // Handle image click (Open single image modal)
+    
     const handleImageClick = (loc: { id: string; name: string; image: string; user: string }) => {
         setSelectedImage(loc);
         openImageModal();
     };
 
-    // Handle thumbnail click in gallery modal
+   
     const handleThumbnailClick = (loc: { id: string; name: string; image: string; user: string }) => {
         setGalleryPreview(loc);
     };
 
     return (
         <div className="p-0 md:p-2">
-            {/* Loading Skeletons */}
+            {/* Loading Skeleton */}
             {loading && (
                 <div className="md:grid md:grid-cols-4 gap-4 flex md:flex-wrap flex-nowrap overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                     {Array.from({ length: 8 }).map((_, index) => (

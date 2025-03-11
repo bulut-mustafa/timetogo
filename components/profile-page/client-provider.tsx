@@ -11,7 +11,7 @@ import YourReservations from './your-reservations';
 export default function ClientProviderProfile() {
     const { user, loading } = useAuth();
     
-    // Lifted state for reservations
+    
     const [savedReservations, setSavedReservations] = useState<SavedReservation[]>([]);
     const [loadingReservations, setLoadingReservations] = useState<boolean>(true);
 
@@ -25,7 +25,7 @@ export default function ClientProviderProfile() {
     }, [loading, user, router]);
 
 
-    // Fetch reservations only once
+    
     const fetchReservations = useCallback(async () => {
         if (!user?.uid) return;
         try {
@@ -39,7 +39,7 @@ export default function ClientProviderProfile() {
     }, [user?.uid]);
 
     useEffect(() => {
-        fetchReservations(); // Call once when component mounts
+        fetchReservations(); 
     }, [fetchReservations]);
 
     return (

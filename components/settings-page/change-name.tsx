@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Input, Button } from "@heroui/react";
 import { getAuth, updateProfile } from "firebase/auth";
-import { update } from "firebase/database";
 
 export default function ChangeName()  {
     const [name, setName] = useState("");
@@ -33,7 +32,7 @@ export default function ChangeName()  {
             }
 
             const newDisplayName = `${name} ${lastName}`;
-            // Update password
+            // Update profile
             await updateProfile(user, { displayName: newDisplayName });
             setMessage("Name updated successfully!");
         } catch (error: any) {

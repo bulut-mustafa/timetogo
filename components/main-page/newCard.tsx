@@ -20,7 +20,7 @@ export default function NewCard({ location, showEyeIcon = false, onEyeClick }: N
             {showEyeIcon && (
                 <button
                     className="absolute border border-white top-2 right-2 p-1 z-10 rounded-lg"
-                    onClick={onEyeClick} // Trigger function when clicking the eye
+                    onClick={onEyeClick} 
                 >
                     <Image src={Eye} alt="show deal" width={16} height={16} />
                 </button>

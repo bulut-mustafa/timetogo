@@ -1,9 +1,6 @@
 'use client'
-
-import { useState, useEffect } from 'react';
-import { getDestinations } from "@/lib/destinations";
 import NewCard from "./newCard";
-import SkeletonCard from "./cardSkeleton"; // Import SkeletonCard
+import SkeletonCard from "./cardSkeleton"; 
 import { Location } from "@/lib/types";
 
 interface PopularDestinationsProps {

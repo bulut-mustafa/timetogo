@@ -9,15 +9,7 @@ interface ProfileHeadProps {
     userInfoLoading: boolean;
 }
 
-function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("en", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-  }
-  
+
 export default function ProfileHead({ user, uid, userInfoLoading }: ProfileHeadProps) {
     const router = useRouter();
 
@@ -40,7 +32,7 @@ export default function ProfileHead({ user, uid, userInfoLoading }: ProfileHeadP
         );
     }
 
-    if (!user) return null; // Prevent rendering anything before redirect
+    if (!user) return null; 
 
     return (
         <div className='flex items-center gap-4 p-4 border-b border-gray-200'>

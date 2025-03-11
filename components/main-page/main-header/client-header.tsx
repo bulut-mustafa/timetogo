@@ -40,12 +40,6 @@ const ClientHeader: React.FC = () => {
     );
   }
 
-  // If user is logged in but userInfo is still loading, just show a placeholder
-  if (!user) {
-    return (
-      <li className="flex w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
-    );
-  }
 
   // Render UserDropdown when user is logged in
   return (

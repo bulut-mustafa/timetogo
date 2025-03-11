@@ -6,7 +6,7 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/main-page"); // Redirect to your main page
+    router.push("/main-page");
   }, [router]);
 
   return (

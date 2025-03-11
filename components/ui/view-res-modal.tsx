@@ -12,11 +12,11 @@ interface SaveLocationProps {
     reservation: SavedReservation;
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
-    fetchReservations: () => Promise<void>; // Add this prop
+    fetchReservations: () => Promise<void>; 
 }
 
 export default function ViewReservation({ reservation, isOpen, onOpenChange, fetchReservations }: SaveLocationProps) {
-    // Helper function to convert ISO string to DateValue format
+    //  function to convert ISO string to DateValue format
     const convertToDateValue = (isoString: string) => {
         const date = new Date(isoString);
         return parseDate(date.toISOString().split("T")[0]); // Extract YYYY-MM-DD

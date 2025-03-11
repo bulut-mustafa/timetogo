@@ -11,14 +11,14 @@ import SaveLocation from "./location-saveLocation";
 export default function SavedCards({ location }: { location: Location }) {
     const { user, loading } = useAuth();
     const [savedReservations, setSavedReservation] = useState<SavedReservation[]>([])
-    const [loadingReservations, setLoadingReservations] = useState<boolean>(true); // New loading state
+    const [loadingReservations, setLoadingReservations] = useState<boolean>(true);
     const [selectedReservation, setSelectedReservation] = useState<SavedReservation | null>(null);
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
         if (selectedReservation) {
-            onOpen(); // Open modal only when a new reservation is selected
+            onOpen();
         }
     }, [selectedReservation]);
 
@@ -40,13 +40,13 @@ export default function SavedCards({ location }: { location: Location }) {
 
 
     const handleOpenModal = () => {
-        setSelectedReservation(null); // Reset state first
+        setSelectedReservation(null); 
         setTimeout(() => {
             const reservation = savedReservations.find(deal => deal.destinationId === location.id);
             if (reservation) {
                 setSelectedReservation(reservation);
             }
-        }, 0); // Ensure state update before opening modal
+        }, 0);
     };
 
 

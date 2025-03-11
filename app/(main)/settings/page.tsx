@@ -19,7 +19,7 @@ export default function Settings() {
         <p className="text-3xl font-semibold p-2 pl-4 border-b border-black" >Account Settings</p>
       </div>
       <div className="flex flex-col md:flex-row h-full">
-        {/* Sidebar */}
+        
         <div className="border-r border-gray-300 w-full md:w-1/4 p-4">
           {settingsOptions.map((option) => (
             <button
@@ -33,7 +33,7 @@ export default function Settings() {
           ))}
         </div>
 
-        {/* Content */}
+        
         <div className="flex-1 p-4">
           {settingsOptions.find((option) => option.key === selectedSetting)?.component}
         </div>

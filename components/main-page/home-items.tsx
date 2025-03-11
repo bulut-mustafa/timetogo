@@ -7,7 +7,6 @@ import PopularDestinations from "./popular-items";
 import YourDestinations from "./your-items";
 import { Location } from "@/lib/types";
 import { getDestinations } from "@/lib/destinations";
-import SkeletonCard from "./cardSkeleton";
 
 const ClientOnlyHome = () => {
   const { user, loading } = useAuth();

@@ -6,8 +6,6 @@ import Image from 'next/image';
 import { app, auth } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
-import { database } from '../../firebase';
-import { ref, set } from 'firebase/database';
 import { Input } from "@heroui/react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../login-page/password-input";
 
@@ -72,7 +70,7 @@ const SignUpForm: React.FC = () => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                // If user is signed in, redirect to home or another page
+                // If user is signed up, redirect to home
                 router.push('/');
             } else {
                 // If no user is signed in, stop loading

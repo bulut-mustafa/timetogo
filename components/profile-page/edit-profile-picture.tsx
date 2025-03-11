@@ -8,7 +8,7 @@ import { useState } from "react";
 import { getAuth, updateProfile } from "firebase/auth";
 import HeroModal from "../ui/modal";
 const MAX_FILE_SIZE_MB = 2; // Set the max file size limit
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024; // Convert MB to bytes
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 interface EditPictureProps {
     user: authUser | null;
     uid: string | undefined;
@@ -87,7 +87,7 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
         fileInputRef.current?.click();
     };
 
-    // Handle upload confirmation
+    
     const handleConfirmUpload = async () => {
         if (!selectedFile || !uid) return;
     
@@ -105,7 +105,7 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error || "Delete failed");
             }
-            // 🔹 Upload the image via API
+            //  Upload the image via API
             const response = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,
@@ -114,7 +114,7 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || "Upload failed");
     
-            // 🔹 Get the new file URL from API response
+            //  Get the new file URL from API response
             const newImageUrl = data.fileName;
             const auth = getAuth();
             const currentUser = auth.currentUser;
@@ -139,7 +139,6 @@ export default function EditPicture({ user, uid }: EditPictureProps) {
         <>
 
             <div className="relative w-20 h-20 overflow-hidden ml-2">
-                {/* Profile Picture or Initials */}
                 {user && user.photoURL ? (
                     <Image src={`https://timetogo-user-pictures.s3.amazonaws.com/${user.photoURL}`} alt={'User Picture'} width={80} height={80} className="object-cover w-full h-full rounded-full" />
                 ) : (
