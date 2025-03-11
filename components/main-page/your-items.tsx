@@ -59,8 +59,9 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
     return (
         <section className="px-4 lg:px-8 pt-2">
             <h2 className="mb-2 sm:mb-4 font-semibold text-lg pl-2">Your Saved Destinations</h2>
-
+    
             {loadingReservations ? (
+                // Show skeletons while still loading
                 <div className="flex flex-no-wrap overflow-x-auto scrollbar-hide xl:flex-wrap mb-4 -mx-3">
                     {[...Array(4)].map((_, i) => (
                         <div key={i} className="min-w-[250px] md:min-w-[280px] p-4 lg:w-1/4 mb-3 group">
@@ -68,22 +69,24 @@ export default function YourDestinations({ destinations, loading, userId }: Popu
                         </div>
                     ))}
                 </div>
-            ) : filteredDestinations.length === 0 ? (
-                <p className="text-center text-gray-500">No saved destinations found. Start adding some.</p>
-            ) : (
+            ) : filteredDestinations.length > 0 ? (
+                // Show destinations if there are any
                 <div className="flex flex-no-wrap overflow-x-auto scrollbar-hide xl:flex-wrap mb-4 -mx-3 pl-2">
                     {filteredDestinations.map((place, i) => (
                         <div key={i} className="min-w-[250px] md:min-w-[280px] p-2 lg:w-1/4 mb-3 group">
                             <NewCard
                                 location={place}
                                 showEyeIcon={true}
-                                onEyeClick={() => handleOpenModal(place)} // Pass function
+                                onEyeClick={() => handleOpenModal(place)}
                             />
                         </div>
                     ))}
                 </div>
+            ) : (
+                // Only show "No saved destinations" if the loading is done and there are none
+                <p className="text-center text-gray-500">No saved destinations found. Start adding some.</p>
             )}
-
+    
             {/* Show modal only if a location is selected */}
             {selectedReservation && (
                 <ViewReservation reservation={selectedReservation} isOpen={isOpen} onOpenChange={onOpenChange} fetchReservations={fetchReservations} />
