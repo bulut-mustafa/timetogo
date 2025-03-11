@@ -4,11 +4,18 @@ import HeroModal from "../ui/modal";
 import { useDisclosure } from "@heroui/react";
 import { now, getLocalTimeZone, today } from "@internationalized/date";
 import type { Location } from "@/lib/types";
-import { Input, DatePicker, Checkbox, Select, SelectItem } from "@heroui/react";
+import { Input, Checkbox} from "@heroui/react";
 import { useAuth } from "@/context/auth-context";
 import { addReservation } from "@/lib/reservations";
 import { Button } from "@heroui/react";
 import { toast } from 'react-hot-toast';
+
+import dynamic from "next/dynamic";
+
+const DatePicker = dynamic(() => import("@heroui/react").then((mod) => mod.DatePicker), {
+  ssr: false, // Disable server-side rendering
+  loading: () => <p>Loading...</p>, // Optional loading indicator
+});
 
 export default function SaveLocation({ location, onSave }: { location: Location, onSave: () => void }) {
     const { user, loading } = useAuth();

@@ -5,9 +5,14 @@ import { useDisclosure } from "@heroui/react";
 import { updateReservation, deleteReservation } from "@/lib/reservations";
 import { now, getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import type { SavedReservation } from "@/lib/types";
-import { Input, DatePicker, Checkbox, Select, SelectItem, Button } from "@heroui/react";
+import { Input, Checkbox, Button } from "@heroui/react";
 import { toast } from 'react-hot-toast';
+import dynamic from "next/dynamic";
 
+const DatePicker = dynamic(() => import("@heroui/react").then((mod) => mod.DatePicker), {
+  ssr: false, // Disable server-side rendering
+  loading: () => <p>Loading...</p>, // Optional loading indicator
+});
 interface SaveLocationProps {
     reservation: SavedReservation;
     isOpen: boolean;

@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import { initializeApp } from "firebase/app";
-import { getAuth, updateProfile } from "firebase/auth";
-import { clientConfig } from "@/firebase.config"; // Ensure this is the correct import
 import { S3 } from "@aws-sdk/client-s3";
 import { revalidatePath } from "next/cache";
 

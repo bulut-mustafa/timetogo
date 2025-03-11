@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useRef, useState, useCallback } from "react";
 import { authUser } from '@/lib/types';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@heroui/react";
 import { useDisclosure } from "@heroui/react";
 import { getAuth, updateProfile } from "firebase/auth";
 import HeroModal from "../ui/modal";
