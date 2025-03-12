@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { useDisclosure } from "@heroui/react";
 import { SavedReservation } from "@/lib/types";
-import ReservationCard from "./reservation-card"; 
-import ReservationCardSkeleton from "./reservation-card-skeleton"; 
+import ReservationCard from "./reservation-card";
+import ReservationCardSkeleton from "./reservation-card-skeleton";
 import ViewReservation from '@/components/ui/view-res-modal';
 
 interface ReservationProps {
     savedReservations: SavedReservation[];
     loadingReservations: boolean;
-    fetchReservations: () => Promise<void>; 
+    fetchReservations: () => Promise<void>;
 }
 
 export default function YourReservations({ savedReservations, loadingReservations, fetchReservations }: ReservationProps) {
@@ -31,7 +31,16 @@ export default function YourReservations({ savedReservations, loadingReservation
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {savedReservations.map((reservation) => (
-                        <div key={reservation.id} onClick={() => { setSelectedReservation(reservation); onOpen(); }}>
+                        <div
+                            key={reservation.id}
+                            onClick={() => {
+                                setSelectedReservation(null);  // Force reset first
+                                setTimeout(() => {
+                                    setSelectedReservation(reservation);
+                                    onOpen(); // Open modal AFTER updating state
+                                }, 0);
+                            }}
+                        >
                             <ReservationCard reservation={reservation} />
                         </div>
                     ))}
@@ -41,6 +50,7 @@ export default function YourReservations({ savedReservations, loadingReservation
             {/* Reservation Details Modal */}
             {selectedReservation && (
                 <ViewReservation
+                    key={selectedReservation.id}  // Forces React to re-create the component
                     reservation={selectedReservation}
                     isOpen={isOpen}
                     onOpenChange={onOpenChange}
