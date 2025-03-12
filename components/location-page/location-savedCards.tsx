@@ -32,20 +32,18 @@ export default function SavedCards({ location }: { location: Location }) {
         } catch (error) {
             console.error("Error fetching reservations:", error);
         }
-    }, [user?.uid]); 
+    }, [user?.uid]);
 
     useEffect(() => {
         fetchReservations();
     }, [user?.uid, fetchReservations]);
 
 
-    const handleOpenModal = () => {
-        setSelectedReservation(null); 
+    const handleOpenModal = (reservation: SavedReservation) => {
+        setSelectedReservation(null); // Reset first to force re-render
         setTimeout(() => {
-            const reservation = savedReservations.find(deal => deal.destinationId === location.id);
-            if (reservation) {
-                setSelectedReservation(reservation);
-            }
+            setSelectedReservation(reservation);
+            onOpen(); // Open modal AFTER state update
         }, 0);
     };
 
@@ -70,7 +68,11 @@ export default function SavedCards({ location }: { location: Location }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2">
                     {savedReservations.length > 0 ? (
                         savedReservations.map((reservation) => (
-                            <SavedCard key={reservation.id} saved={reservation} handleOpenModal={handleOpenModal} />
+                            <SavedCard
+                                key={reservation.id}
+                                saved={reservation}
+                                handleOpenModal={() => handleOpenModal(reservation)} // Pass the correct reservation
+                            />
                         ))
                     ) : (
                         <p className="text-gray-500 col-span-full">No saved reservations yet.</p>
@@ -79,7 +81,13 @@ export default function SavedCards({ location }: { location: Location }) {
             )}
 
             {selectedReservation && (
-                <ViewReservation reservation={selectedReservation} isOpen={isOpen} onOpenChange={onOpenChange} fetchReservations={fetchReservations} />
+                <ViewReservation
+                    key={selectedReservation.id}
+                    reservation={selectedReservation}
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    fetchReservations={fetchReservations}
+                />
             )}
         </div>
     );
