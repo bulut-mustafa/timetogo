@@ -85,7 +85,6 @@ const LoginForm: React.FC = () => {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
-            
             <div>
                 <Input isRequired label="Email" name='email' type="email" variant={'flat'} value={formData.email} onChange={handleInputChange} />
             </div>

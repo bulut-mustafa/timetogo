@@ -23,8 +23,6 @@ export default async function LocationPage({ params }: LocationPageProps) {
       <div className="container flex flex-col mx-auto p-2 mt-4">
         <div className="text-lg font-bold w-full ">
           <p className="text-gray-400 font-normal text-sm ">{location.description}</p>
-          
-
         </div>
         <div className="w-full pt-2">
           <div className="">
