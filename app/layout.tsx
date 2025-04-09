@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import "./globals.css";
 import { AuthProvider } from "@/context/auth-context";
 import { Providers } from "./provider";
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ subsets: ["latin"], display: "swap"});
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </Providers>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
