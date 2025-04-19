@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://timetogo-chi.vercel.app
+
+# Sitemaps
+Sitemap: https://timetogo-chi.vercel.app/sitemap.xml
